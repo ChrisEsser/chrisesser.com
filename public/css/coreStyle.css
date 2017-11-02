@@ -1,4 +1,42 @@
+#trade-nav-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #17252E;
+}
 
+#trade-nav-footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    margin: 0;
+}
 
+#trade-nav-footer ul li {
+    flex: 1 1 auto;
+}
 
+#trade-nav-footer li {
+    color: white;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 5px 0;
+    border-right: 1px solid #3A444D;
+}
+#trade-nav-footer li:last-child {
+    border-right: none;
+}
 
+#trade-nav-footer li.active {
+    background-color: #3A444D;
+}
+
+#trade-nav-footer li a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: white;
+    text-decoration: none;
+}

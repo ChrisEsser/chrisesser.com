@@ -42,7 +42,16 @@ class Template
         }
 
         if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
+
+            if (file_exists($viewsRoot . $this->_controller . DS . 'header'  . '.php')) {
+                include($viewsRoot . $this->_controller . DS . 'header'  . '.php');
+            }
+
             include($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
+
+            if (file_exists($viewsRoot . $this->_controller . DS . 'footer'  . '.php')) {
+                include($viewsRoot . $this->_controller . DS . 'footer'  . '.php');
+            }
         }
 
         if ($renderHeader == 1 && file_exists($viewsRoot . 'index.footer.php')) {
