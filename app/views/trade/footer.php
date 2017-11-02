@@ -1,7 +1,7 @@
 
-<div style="height: 60px;"></div>
+<div style="height: 60px;" class="clearfix"></div>
 
-<div id="trade-nav-footer" class="row">
+<div id="trade-nav-footer">
     <div class="container">
         <ul>
             <li class="<?=($page == 'prices') ? 'active' : ''?>"><a href="<?=BASE_PATH?>/trade/prices"><i class="fa fa-btc"></i><br />Prices</a></li>

@@ -58,14 +58,14 @@
 
     <div class="trade-charts-top">
 
-        <div class="my-money-label">$123.54</div>
+        <div class="my-money-label">$121.39</div>
         <div class="my-account-link"><a href="<?=BASE_PATH?>/trade/accounts">Your Accounts <i class="fa fa-arrow-right"></i></a></div>
 
     </div>
 
     <div class="container chart-container">
 
-        <div class="col-lg-4">
+        <div class="col-lg-12 row">
             <div class="graph-section">
                 <div class="trade-graph-top-bar">
                     <div class="row">
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-12 row">
             <div class="graph-section">
                 <div class="trade-graph-top-bar">
                     <div class="row">
@@ -99,7 +99,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-12 row">
             <div class="graph-section">
                 <div class="trade-graph-top-bar">
                     <div class="row">
@@ -132,20 +132,16 @@
             legend: {display: false}
         };
 
-
-        var yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
-        var start = yesterday.toISOString();
-
         d = new Date();
         var end = d.toISOString();
 
-        $.getJSON( "https://api.gdax.com/products/BTC-USD/candles", {granularity: 900, start: start}, function( data ) {
+        $.getJSON( "https://api.gdax.com/products/BTC-USD/candles", {granularity: 900}, function( data ) {
         }).done(function(data) {
 
             var closeData = [];
             var timeData = [];
             for (var j = 95; j >= 0; j--) {
-                closeData.push(Math.round(data[j][4]));
+                closeData.push(data[j][4]);
                 var date = new Date(data[j][0]*1000);
                 var hours = date.getHours();
                 var minutes = "0" + date.getMinutes();
@@ -170,13 +166,13 @@
             });
         });
 
-        $.getJSON( "https://api.gdax.com/products/ETH-USD/candles", {granularity: 900, start: start}, function( data ) {
+        $.getJSON( "https://api.gdax.com/products/ETH-USD/candles", {granularity: 900}, function( data ) {
         }).done(function(data) {
 
             var closeData = [];
             var timeData = [];
             for (var j = 95; j >= 0; j--) {
-                closeData.push(Math.round(data[j][4]));
+                closeData.push(data[j][4]);
                 var date = new Date(data[j][0]*1000);
                 var hours = date.getHours();
                 var minutes = "0" + date.getMinutes();
@@ -202,13 +198,13 @@
             });
         });
 
-        $.getJSON( "https://api.gdax.com/products/LTC-USD/candles", {granularity: 900, start: start}, function( data ) {
+        $.getJSON( "https://api.gdax.com/products/LTC-USD/candles", {granularity: 900}, function( data ) {
         }).done(function(data) {
 
             var closeData = [];
             var timeData = [];
             for (var j = 95; j >= 0; j--) {
-                closeData.push(Math.round(data[j][4]));
+                closeData.push(data[j][4]);
                 var date = new Date(data[j][0]*1000);
                 var hours = date.getHours();
                 var minutes = "0" + date.getMinutes();
