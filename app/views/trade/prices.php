@@ -1,64 +1,40 @@
 <?php
 
     $exchange = new Coinexchange();
-    $products = $exchange->products();
+    $exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
+    $accounts = $exchange->accounts();
+    $cbAccounts = $exchange->coinbase_accounts();
 
+    $balance = $btcBalance = $ethBalance = $ltcBalance = 0;
+    foreach ($accounts as $account) {
+        if ($account['currency'] == 'USD') {
+            $balance = $account['balance'];
+        } else if ($account['currency'] == 'BTC') {
+            $btcBalance = $account['balance'];
+        } else if ($account['currency'] == 'ETH') {
+            $ethBalance = $account['balance'];
+        } else if ($account['currency'] == 'LTC') {
+            $ltcBalance = $account['balance'];
+        }
+    }
+
+    foreach ($cbAccounts as $cbAccount) {
+        if ($cbAccount['currency'] == 'USD') {
+            $balance += $cbAccount['balance'];
+        } else if ($cbAccount['currency'] == 'BTC') {
+            $btcBalance += $cbAccount['balance'];
+        } else if ($cbAccount['currency'] == 'ETH') {
+            $ethBalance += $cbAccount['balance'];
+        } else if ($cbAccount['currency'] == 'LTC') {
+            $ltcBalance += $cbAccount['balance'];
+        }
+    }
 ?>
 
-<style>
-    body {
-        background-color: #FAFAFA;
-    }
-    .trade-graph-top-bar {
-        margin-bottom: 12px;
-        border-bottom: 1px solid lightgray;
-        padding-bottom: 5px;
-    }
-    .graph-main-label {
-        font-size: 18px;
-    }
-    .graph-money-label {
-        font-size: 17px;
-    }
-    .graph-section {
-        padding: 10px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
-        transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
-        margin-top: 15px;
-    }
-    .chart-container {
-        margin-top: 95px;
-    }
-
-    .trade-charts-top {
-        position: absolute;
-        height: 170px;
-        width: 100%;
-        background-color: #17252E;
-        top: 0;
-        text-align: center;
-        color: white;
-    }
-    .my-money-label {
-        font-size: 30px;
-        position: relative;
-        margin-top: 20px;
-    }
-    .my-account-link {
-        margin-top: 2px;
-    }
-    .my-account-link a {
-        color: white;
-        font-size: 15px;
-        text-decoration: none;
-    }
-</style>
 
     <div class="trade-charts-top">
 
-        <div class="my-money-label">$121.39</div>
+        <div class="my-money-label">$<span id="current-balance"><?=number_format($balance, 2)?></span></div>
         <div class="my-account-link"><a href="<?=BASE_PATH?>/trade/accounts">Your Accounts <i class="fa fa-arrow-right"></i></a></div>
 
     </div>
@@ -70,7 +46,7 @@
                 <div class="trade-graph-top-bar">
                     <div class="row">
                         <div class="col-xs-6">
-                            <div class="graph-main-label ">Bitcoin</div>
+                            <div class="graph-main-label">Bitcoin</div>
                             <div><i class="fa fa-circle" style="color: #F4A460"></i> BTC</div>
                         </div>
                         <div class="col-xs-6" style="text-align: right">
@@ -124,7 +100,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script>
 
-
     $(document).ready(function() {
 
         var chart_options = {
@@ -150,13 +125,12 @@
             }
 
             chartObj = $('#btc-chart');
-
             var chart = new Chart(chartObj, {
                 type: 'line',
                 data: {
                     labels: timeData,
                     datasets: [{
-                        label: 'BTH-USD',
+                        label: 'BTH-USD - Close',
                         data: closeData,
                         backgroundColor:"#F4A460",
                         pointRadius: 0
@@ -164,6 +138,7 @@
                 },
                 options: chart_options
             });
+
         });
 
         $.getJSON( "https://api.gdax.com/products/ETH-USD/candles", {granularity: 900}, function( data ) {
@@ -229,6 +204,13 @@
             });
         });
 
+        var btBalance = (<?=$btcBalance?>) ? <?=$btcBalance?> : 0;
+        var ethBalance = (<?=$ethBalance?>) ? <?=$ethBalance?> : 0;
+        var ltcBalance = (<?=$ltcBalance?>) ? <?=$ltcBalance?> : 0;
+        var btcusd = 0;
+        var etcusd = 0;
+        var ltcusd = 0;
+
         var socket = new WebSocket("wss://ws-feed.gdax.com");
         socket.onopen = function() {
             var msg = {
@@ -241,16 +223,28 @@
         socket.onmessage = function(event) {
 
             var msg = JSON.parse(event.data);
-            var price = parseFloat(msg.price).toFixed(2);
 
-            if (msg.product_id ) {
+            if (msg.product_id) {
+
+                var price = parseFloat(msg.price).toFixed(2);
+                var value = 0;
+
+                if (msg.product_id == 'BTC-USD') {
+                    btcusd = btBalance * msg.price;
+                } else if (msg.product_id == 'ETH-USD') {
+                    etcusd = ethBalance * msg.price;
+                } else if (msg.product_id == 'LTC-USD') {
+                    ltcusd = ltcBalance * msg.price;
+                }
+
+                var accountBallance = (<?=$balance?>) ? <?=$balance?> : 0;
+                accountBallance = accountBallance + btcusd + etcusd + ltcusd;
+
+
                 $('#' + msg.product_id).text(price);
+                $('#current-balance').text(parseFloat(accountBallance).toFixed(2));
             }
         };
-
-    });
-
-    $(document).ready(function() {
 
     });
 

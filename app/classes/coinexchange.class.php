@@ -5,7 +5,7 @@ require_once ROOT . DS . 'app' . DS . 'classes' . DS . 'coinexchangerequest.clas
 class Coinexchange
 {
 
-    public $url = 'https://api-public.sandbox.gdax.com';
+    public $url = 'https://api.gdax.com/';
 
     public $endpoints = [
         'accounts'          => ['method' => 'GET', 'uri' => '/accounts'],
