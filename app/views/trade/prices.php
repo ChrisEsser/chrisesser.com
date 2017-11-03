@@ -29,14 +29,14 @@
             $ltcBalance += $cbAccount['balance'];
         }
     }
+
+$btcBalance += 0.01325925;
 ?>
 
 
     <div class="trade-charts-top">
-
         <div class="my-money-label">$<span id="current-balance"><?=number_format($balance, 2)?></span></div>
         <div class="my-account-link"><a href="<?=BASE_PATH?>/trade/accounts">Your Accounts <i class="fa fa-arrow-right"></i></a></div>
-
     </div>
 
     <div class="container chart-container">

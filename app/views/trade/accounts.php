@@ -52,7 +52,7 @@
                 </div>
                 <div class="accounts-right">
                     <div>
-                        <?=$account['balance']?><br />
+                        <?=number_format($account['balance'])?><br />
                         <?php if ($account['currency'] != 'USD') { ?>
                             $<?=number_format($account['balance'] * $dollarValue, 2)?>
                         <?php } ?>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="accounts-right">
                     <div>
-                        <?=$account['balance']?><br />
+                        <?=number_format($account['balance'])?><br />
                         <?php if ($account['currency'] != 'USD') { ?>
                             $<?=number_format($account['balance'] * $dollarValue, 2)?>
                         <?php } ?>
