@@ -22,6 +22,7 @@ $ethUsd = $exchange->ticker('ETH-USD')['price'];
 $ltcUsd = $exchange->ticker('LTC-USD')['price'];
 
 $btcBalance += 0.01325925;
+$balance += 58.34;
 
 
 ?>
@@ -281,7 +282,7 @@ $btcBalance += 0.01325925;
         color: #FFFFFF;
         position: absolute;
         top: 50%;
-        margin-top: -14px;
+        margin-top: -11px;
         font-size: 28px;
         font-style: normal;
         font-weight: 400;
@@ -301,21 +302,20 @@ $btcBalance += 0.01325925;
     }
 
     .buy-columns {
+        width: 50%;
         display: inline-block;
         padding: 0;
         float: left;
     }
     .column-left {
-        width: 60%;
         padding-right: 7px;
     }
     .column-right {
-        width: 40%;
         padding-left: 7px;
     }
 
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         .buy-columns {
             width: 100%;
             display: block;
@@ -354,19 +354,19 @@ $btcBalance += 0.01325925;
                 <h4>BALANCE</h4>
                 <div style="margin-top: 7px;" class="row">
                     <div class="col-xs-6" id="conversion-label">USD</div>
-                    <div class="col-xs-6" id="conversion-value" style="text-align: right;"><?=number_format($balance, 2)?></div>
+                    <div class="col-xs-6" id="conversion-value" role="button" style="text-align: right;"><?=number_format($balance, 2)?></div>
                 </div>
                 <div style="margin-top: 7px;" class="row">
                     <div class="col-xs-6" id="balance-currency-label" style="width: 50%; display: inline-block">BTC</div>
-                    <div class="col-xs-6" id="balance-value" style="text-align: right;"><?=number_format((float)$btcBalance, 8)?></div>
+                    <div class="col-xs-6" id="balance-value" role="button"  style="text-align: right;"><?=number_format((float)$btcBalance, 8)?></div>
                 </div>
             </div>
         </div>
 
         <div class="order-book-snapshot">
             <div id="order-book-snapshot-price">0.0</div>
-            <div id="order-book-sells"></div>
-            <div id="order-book-buys"></div>
+            <div id="order-book-sells" role="button" ></div>
+            <div id="order-book-buys" role="button"></div>
         </div>
 
         <ul class="order-type-list">
@@ -391,10 +391,6 @@ $btcBalance += 0.01325925;
             <input type="hidden" id="side" name="side" value="buy" />
             <input type="hidden" id="currency" name="currency" value="BTC-USD" />
             <input type="hidden" id="type" name="type" value="MARKET" />
-
-            <div id="error-message">
-                <span></span>
-            </div>
 
             <!-- amount -->
             <div class="form-group" id="form-amount-row">
@@ -466,7 +462,7 @@ $btcBalance += 0.01325925;
         <hr class="line-rule" />
 
         <div class="total-row">
-            <div id="total-label">Total (BTC)</div>
+            <div>Total (<span id="total-label">BTC</span>)</div>
             <div id="total-value">0.00</div>
         </div>
 
@@ -474,10 +470,17 @@ $btcBalance += 0.01325925;
         <button type="button" class="buy-sell-submit-btn buy-active" id="place-order" style="margin-top: 15px">Place <span id="order-type">buy</span> order</button>
 
 
+        <div id="error-message">
+            <div class="pull-right" role="button" >X</div>
+            <span></span>
+        </div>
+
+
     </div>
 
     <div class="buy-columns column-right">
-<!--        Test-->
+        Orders
+        <hr />
     </div>
 
 </div>
@@ -491,6 +494,15 @@ $btcBalance += 0.01325925;
         var side = 'buy';
         var currency = 'BTC-USD';
         var type = 'MARKET';
+        var lastBid = 0.0;
+        var lastAsk = 0.0;
+        var lastMatch = {
+            'BTC-USD': 0.0,
+            'ETH-USD': 0.0,
+            'ETC-USD': 0.0,
+            'ETH-BTC': 0.0,
+            'LTC-BTC': 0.0
+        };
     
         chanceScreen(side, currency, type);
     
@@ -499,6 +511,7 @@ $btcBalance += 0.01325925;
             changeBuySell(side);
             changeCurrency(currency);
             changeOrderType(type);
+            changeTotalLabels();
             changeTotal();
         }
 
@@ -526,13 +539,6 @@ $btcBalance += 0.01325925;
                     $('#order-type').text('buy');
                     $('#order-label').text('Buy');
                     $('.buy-sell-submit-btn').toggleClass('buy-active sell-active');
-                    if (type == 'LIMIT') {
-                        $('#form-amount-row').find('span').text(currency);
-                        $('#total-label').text('Total (USD)');
-                    } else  {
-                        $('#form-amount-row').find('span').text('USD');
-                        $('#total-label').text('Total (' + currency + ')');
-                    }
                 } else if (side == 'sell') {
                     $('.buy-sell-btn-item:last-child').addClass('sell-active');
                     $('.buy-sell-btn-item:first-child').removeClass('buy-active');
@@ -540,9 +546,99 @@ $btcBalance += 0.01325925;
                     $('#order-label').text('Sell');
                     $('.buy-sell-submit-btn').toggleClass('buy-active sell-active');
                     $('#form-amount-row').find('span').text(currency);
-                    $('#total-label').text('Total (USD)');
                 }
                 $('#side').val(side);
+                changeTotalLabels();
+            }
+        }
+
+        function changeTotalLabels() {
+
+            if ((type == 'MARKET' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'MARKET' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'MARKET' && side == 'buy' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-USD')) {
+                $('#form-amount-row').find('span').text('USD');
+            } else if ((type == 'MARKET' && side == 'sell' && currency == 'BTC-USD')
+                || (type == 'LIMIT' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'BTC-USD')) {
+                $('#form-amount-row').find('span').text('BTC');
+            } else if ((type == 'MARKET' && side == 'sell' && currency == 'ETH-USD')
+                || (type == 'LIMIT' && currency == 'ETH-USD')
+                || (type == 'LIMIT' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-BTC')) {
+                $('#form-amount-row').find('span').text('ETH');
+            } else if ((type == 'MARKET' && side == 'sell' && currency == 'LTC-USD')
+                || (type == 'LIMIT' && currency == 'LTC-USD')
+                || (type == 'LIMIT' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-BTC')) {
+                $('#form-amount-row').find('span').text('LTC');
+            }
+
+            if ((type == 'MARKET' && side == 'sell' && currency == 'BTC-USD')
+                || (type == 'MARKET' && side == 'sell' && currency == 'ETH-USD')
+                || (type == 'MARKET' && side == 'sell' && currency == 'LTC-USD')
+                || (type == 'LIMIT' && currency == 'BTC-USD')
+                || (type == 'LIMIT' && currency == 'ETH-USD')
+                || (type == 'LIMIT' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-USD')
+                ||type == 'STOP' && side == 'sell' && currency == 'LTC-USD') {
+                $('#total-label').text('USD');
+            } else if ((type == 'MARKET' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'LIMIT' && currency == 'ETH-BTC')
+                || (type == 'LIMIT' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-BTC')) {
+                $('#total-label').text('BTC');
+            } else if ((type == 'MARKET' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-BTC')) {
+                $('#total-label').text('ETH');
+            } else if ((type == 'MARKET' && side == 'buy' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-USD')
+                ||(type == 'STOP' && side == 'buy' && currency == 'LTC-BTC')) {
+                $('#total-label').text('LTC');
+            }
+
+            if ((type == 'LIMIT' && currency == 'BTC-USD')
+                || (type == 'LIMIT' && currency == 'ETH-USD')
+                || (type == 'LIMIT' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-USD')) {
+                $('#form-price-row').find('span').text('USD');
+            } else if ((type == 'LIMIT' && currency == 'ETH-BTC')
+                || (type == 'LIMIT' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-BTC')) {
+                $('#form-price-row').find('span').text('BTC');
+            }
+
+            if ((type == 'STOP' && side == 'buy' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'BTC-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-USD')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-USD')) {
+                $('#stop-limit-price').find('span').text('USD');
+            } else if ((type == 'STOP' && side == 'buy' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'buy' && currency == 'LTC-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'ETH-BTC')
+                || (type == 'STOP' && side == 'sell' && currency == 'LTC-BTC')) {
+                $('#stop-limit-price').find('span').text('BTC');
             }
         }
     
@@ -592,14 +688,6 @@ $btcBalance += 0.01325925;
                     $('#conversion-value').text(<?=number_format($btcBalance, 8)?>);
 
                 }
-
-
-                if (side == 'sell') {
-                    $('#form-amount-row').find('span').text(currency);
-                    $('#total-label').text('Total (USD)');
-                } else {
-                    $('#total-label').text('Total (' + currency + ')');
-                }
                 $('#coin').val(currency);
             }
         }
@@ -611,13 +699,6 @@ $btcBalance += 0.01325925;
                 if (type == 'MARKET') {
                     $('.order-type-list li:first-child').addClass('active');
                     $('#form-price-row, #advanced-row, #stop-limit-price, #cancel_after-row').hide();
-                    if (side == 'buy') {
-                        $('#form-amount-row').find('span').text('USD');
-                        $('#total-label').text('Total (' + currency + ')');
-                    } else {
-                        $('#form-amount-row').find('span').text(currency);
-                        $('#total-label').text('Total (USD)');
-                    }
                 } else if (type == 'LIMIT') {
                     $('.order-type-list li:nth-child(2)').addClass('active');
                     $("#form-price-row").show().children('label').first().text('Limit Price');
@@ -628,19 +709,11 @@ $btcBalance += 0.01325925;
                     else $('#cancel_after-row').hide();
 
                     $('#form-amount-row').find('span').text(currency);
-                    $('#total-label').text('Total (USD)');
                 } else if (type == 'STOP') {
                     $('.order-type-list li:last-child').addClass('active');
                     $("#form-price-row").show().children('label').first().text('Stop Price');
                     $('#advanced-row, #stop-limit-price').show();
                     $('#policy-row, #cancel_after-row').hide();
-                    if (side == 'buy') {
-                        $('#form-amount-row').find('span').text('USD');
-                        $('#total-label').text('Total (' + currency + ')');
-                    } else {
-                        $('#form-amount-row').find('span').text(currency);
-                        $('#total-label').text('Total (USD)');
-                    }
                 }
                 $('#type').val(type);
             }
@@ -651,6 +724,8 @@ $btcBalance += 0.01325925;
         $('.buy-btn-group button').click(function() {
             changeCurrency($(this).text());
             $(this).addClass('active');
+            clearForm();
+            changeTotalLabels();
             changeTotal();
             clearErrors();
         });
@@ -658,6 +733,8 @@ $btcBalance += 0.01325925;
         // order type selection buttons
         $('.order-type-item').click(function() {
             changeOrderType($(this).text());
+            clearForm();
+            changeTotalLabels();
             changeTotal();
             clearErrors();
         });
@@ -666,6 +743,8 @@ $btcBalance += 0.01325925;
         $('.buy-sell-btn-item').click(function() {
             if ($(this).hasClass('buy') && !$(this).hasClass('buy-active')) changeBuySell('buy');
             else changeBuySell('sell');
+            clearForm();
+            changeTotalLabels();
             changeTotal();
             clearErrors();
         });
@@ -702,10 +781,6 @@ $btcBalance += 0.01325925;
                 $('#post_only').removeAttr('disabled');
             }
         });
-
-        var lastBid = 0.0;
-        var lastAsk = 0.0;
-        var lastMatch = 0.0;
 
         function updateOrderSnapshot() {
             $.getJSON('https://api.gdax.com/products/' + currency + '/book?level=2', function(data) {
@@ -746,8 +821,8 @@ $btcBalance += 0.01325925;
                 asksSize += parseFloat(data.asks[9][1]);
 
 
-                prctBids = (Math.round(bidsSize / totalSize * 100)).toString() + '%';
-                prctAsks = (Math.round(asksSize / totalSize * 100)).toString() + '%';
+                prctBids = (Math.round(bidsSize / totalSize * 100 * 1.25)).toString() + '%';
+                prctAsks = (Math.round(asksSize / totalSize * 100 * 1.25)).toString() + '%';
 
                 $('#order-book-buys').css({width: prctBids}).text(bidsSize.toFixed(2).toString());
                 $('#order-book-sells').css({width: prctAsks}).text(asksSize.toFixed(2).toString());
@@ -775,6 +850,20 @@ $btcBalance += 0.01325925;
             clearErrors();
         });
 
+        $('#conversion-value').click(function() {
+            if (type == 'MARKET' || type == 'STOP') {
+                if (type == 'MARKET') {
+                    changeBuySell('buy');
+                }
+                if (currency == 'BTC-USD' || currency == 'ETH-USD' || currency == 'LTC-USD') {
+                    $('#amount').val(parseFloat(<?=$balance?>).toFixed(2));
+                } else if (currency == 'ETH-BTC' || currency == 'LTC-BTC') {
+                    $('#amount').val(parseFloat(<?=$btcBalance?>).toFixed(8));
+                }
+            }
+            changeTotal();
+        });
+
         $('#amount').keyup(function() {
             changeTotal();
         });
@@ -785,15 +874,19 @@ $btcBalance += 0.01325925;
         function changeTotal() {
 
             var amount = 0.0;
+
+            var decimals = ($('#total-label').text() == 'USD') ? 2 : 8;
+
             if (type == 'MARKET') {
-                if (side == 'buy') amount = $('#amount').val() / lastMatch;
-                else if (side == 'sell') amount = $('#amount').val() * lastMatch;
+                if (side == 'buy') amount = $('#amount').val() / lastMatch[ currency ];
+                else if (side == 'sell') amount = $('#amount').val() * lastMatch[ currency ];
             } else if (type == 'LIMIT') {
                 amount = $('#amount').val() * $('#price').val();
             }
+
             if (type != 'STOP') {
                 amount = amount ? amount : 0;
-                $('#total-value').text(parseFloat(amount));
+                $('#total-value').text(parseFloat(amount).toFixed(decimals));
             } else {
                 $('#total-value').text('N/A');
             }
@@ -804,7 +897,7 @@ $btcBalance += 0.01325925;
         socket.onopen = function() {
             var msg = {
                 type: "subscribe",
-                channels: [{name: 'ticker', "product_ids": ["BTC-USD", 'ETH-USD', 'LTC-USD']}]
+                channels: [{name: 'ticker', "product_ids": ["BTC-USD", 'ETH-USD', 'LTC-USD', 'ETH-BTC', 'LTC-BTC']}]
             };
             socket.send(JSON.stringify(msg));
         };
@@ -813,14 +906,11 @@ $btcBalance += 0.01325925;
 
             var msg = JSON.parse(event.data);
 
-            if (msg.product_id) {
+            if (msg.product_id && msg.product_id == currency) {
 
-                if ( msg.product_id == currency) {
-                    lastMatch = parseFloat(msg.price);
-                    $('#order-book-snapshot-price').text(parseFloat(msg.price).toFixed(2));
-                    changeTotal();
-                }
-
+                    lastMatch[ currency ] = parseFloat(msg.price);
+                    var decimals = ($('#conversion-label').text() == 'USD') ? 2 : 8;
+                    $('#order-book-snapshot-price').text(parseFloat(msg.price).toFixed(decimals));
             }
         };
 
@@ -837,7 +927,7 @@ $btcBalance += 0.01325925;
 
                 if (result.result && result.result == 'error') {
 
-                    $('#error-message').show().text(result.message);
+                    $('#error-message').show().find('span').text(result.message);
                     if (result.error_fields) {
                         for (i = 0; i < result.error_fields.length; i++) {
                             $('#' + result.error_fields[i]).closest('.form-group').addClass('has-error');
@@ -860,6 +950,10 @@ $btcBalance += 0.01325925;
             $('#error-message').hide();
             $('#orderForm').children('.form-group').removeClass('has-error');
         }
+
+        $('#error-message div:first-child').click(function() {
+            clearErrors();
+        });
 
     });
 
