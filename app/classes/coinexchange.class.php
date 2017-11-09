@@ -122,14 +122,19 @@ class Coinexchange
         return $this->request('orders');
     }
 
-    public function place($side, $price, $size, $productId)
+    public function place($side, $type, $productId, $price = null, $size = null, $funds = null, $time_in_force = 'GTC', $cancel_after = 'min', $post_only = true)
     {
         $data = [
             //'client_oid' => '', // client generated UUID
-            'price'      => $price, // in quote_increment units (0.01 min for BTC-USD)
-            'size'       => $size, // must honor base_min_size and base_max_size
-            'side'       => $side, // buy or sell
-            'product_id' => $productId
+            'side'          => $side,
+            'type'          => $type,
+            'product_id'    => $productId,
+            'price'         => $price,
+            'size'          => $size,
+            'funds'         => $funds,
+            'time_in_force' => $time_in_force,
+            'cancel_after'  => $cancel_after,
+            'post_only'     => $post_only,
             //'stp' => 'dc' // Or one of co, cn, cb
         ];
         return $this->request('place', $data);

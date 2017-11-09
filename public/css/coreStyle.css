@@ -3,6 +3,7 @@
     bottom: 0;
     width: 100%;
     background-color: #17252E;
+    z-index: 99;
 }
 
 #trade-nav-footer ul {
@@ -92,19 +93,19 @@ body {
 
 .small-top-bar {
     width: 100%;
-    height: 40px;
+    height: 30px;
     background-color: #17252E;
     text-align: center;
-    font-size: 18px;
+    font-size: 15px;
     color: white;
-    line-height: 40px;
+    line-height: 30px;
     vertical-align: middle;
     position: fixed;
-    z-index: 2;
+    z-index: 99;
 }
 
 .top-gap-fix {
-    height: 50px;
+    height: 40px;
     width: 100%;
 }
 
