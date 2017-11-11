@@ -47,7 +47,7 @@ class DB
     /** Select Query **/
     function where($field, $value)
     {
-        $this->_extraConditions .= '`' . $this->_model . '`.`' . $field . '` = \'' . mysqli_real_escape_string($this->_dbHandle, $value) . '\' AND ';
+        $this->_extraConditions .= '`' . strtolower($this->_model) . '`.`' . $field . '` = \'' . mysqli_real_escape_string($this->_dbHandle, $value) . '\' AND ';
     }
 
     /**
@@ -56,7 +56,7 @@ class DB
      */
     function like($field, $value)
     {
-        $this->_extraConditions .= '`' . $this->_model . '`.`' . $field . '` LIKE \'%' . mysqli_real_escape_string($this->_dbHandle, $value) . '%\' AND ';
+        $this->_extraConditions .= '`' . strtolower($this->_model) . '`.`' . $field . '` LIKE \'%' . mysqli_real_escape_string($this->_dbHandle, $value) . '%\' AND ';
     }
 
     /**
@@ -114,6 +114,18 @@ class DB
         $this->_order = $order;
     }
 
+    function count()
+    {
+        global $inflect;
+
+        $this->_model = strtolower($this->_model);
+
+        $from = '`' . $this->_table . '` as `' . $this->_model . '` ';
+        $conditions = '\'1\'=\'1\' AND ';
+
+
+    }
+
     /**
      * this is the main select method.
      * If there are no relationships, then the function simply does a select * from tableName (tableName is same as controllerName).
@@ -143,6 +155,8 @@ class DB
     function search()
     {
         global $inflect;
+
+        $this->_model = strtolower($this->_model);
 
         $from = '`' . $this->_table . '` as `' . $this->_model . '` ';
         $conditions = '\'1\'=\'1\' AND ';
@@ -180,7 +194,6 @@ class DB
 
         $this->_query = 'SELECT * FROM ' . $from . ' WHERE ' . $conditions;
 
-
         $this->_result = mysqli_query($this->_dbHandle, $this->_query);
         $result = [];
         $table = [];
@@ -214,22 +227,13 @@ class DB
 
                         foreach ($this->hasMany as $aliasChild => $modelChild) {
 
-                            $queryChild = '';
-                            $conditionsChild = '';
-                            $fromChild = '';
-
                             $tableChild = strtolower($inflect->pluralize($modelChild));
                             $pluralAliasChild = strtolower($inflect->pluralize($aliasChild));
-                            $singularAliasChild = strtolower($aliasChild);
 
-                            $fromChild .= '`' . $tableChild . '` as `' . $aliasChild . '`';
-
-                            $conditionsChild .= '`' . $aliasChild . '`.`' . strtolower($this->_model) . '_id` = \'' . $tempResults[$this->_model]['id'] . '\'';
-//                            $conditionsChild .= '`' . $aliasChild . '`.deleted = 0 AND ';
-//                            $conditionsChild .= '`' . $aliasChild . '`.active = 1';
+                            $fromChild = '`' . $tableChild . '` as `' . $aliasChild . '`';
+                            $conditionsChild = '`' . $aliasChild . '`.`' . $this->_model . '_id` = \'' . $tempResults[$this->_model]['id'] . '\'';
 
                             $queryChild = 'SELECT * FROM ' . $fromChild . ' WHERE ' . $conditionsChild;
-
                             $queryChild .= (!empty($this->_hMO)) ? ' ORDER BY `' . $this->_hMO[0] . '` ' . $this->_hMO[1] . '' : "";
 
                             $resultChild = mysqli_query($this->_dbHandle, $queryChild);
@@ -250,17 +254,18 @@ class DB
                                         array_push($fieldChild, mysqli_fetch_field_direct($resultChild, $j)->name);
                                     }
 
+
                                     while ($rowChild = mysqli_fetch_row($resultChild)) {
 
                                         for ($j = 0; $j < $numOfFieldsChild; ++$j) {
-                                            $tempResultsChild[$tableChild[$j]][$fieldChild[$j]] = $rowChild[$j];
+                                            $tempResultsChild[$fieldChild[$j]] = $rowChild[$j];
                                         }
 
                                         array_push($resultsChild, $tempResultsChild);
                                     }
                                 }
 
-                                $tempResults[$aliasChild] = $resultsChild;
+                                $tempResults[$pluralAliasChild] = $resultsChild;
 
                             }
 
@@ -273,10 +278,6 @@ class DB
 
                         foreach ($this->hasManyAndBelongsToMany as $aliasChild => $tableChild) {
 
-                            $queryChild = '';
-                            $conditionsChild = '';
-                            $fromChild = '';
-
                             $tableChild = strtolower($inflect->pluralize($tableChild));
                             $pluralAliasChild = strtolower($inflect->pluralize($aliasChild));
                             $singularAliasChild = strtolower($aliasChild);
@@ -285,13 +286,11 @@ class DB
                             sort($sortTables);
                             $joinTable = implode('_', $sortTables);
 
-                            $fromChild .= '`' . $tableChild . '` as `' . $aliasChild . '`,';
+                            $fromChild = '`' . $tableChild . '` as `' . $aliasChild . '`,';
                             $fromChild .= '`' . $joinTable . '`,';
 
-                            $conditionsChild .= '`' . $joinTable . '`.`' . $singularAliasChild . '_id` = `' . $aliasChild . '`.`id` AND ';
-                            $conditionsChild .= '`' . $joinTable . '`.`' . strtolower($this->_model) . '_id` = \'' . $tempResults[$this->_model]['id'] . '\'';
-//                            $conditionsChild .= '`' . $joinTable . '`.deleted = 0 AND ';
-//                            $conditionsChild .= '`' . $joinTable . '`.active = 1';
+                            $conditionsChild = '`' . $joinTable . '`.`' . $singularAliasChild . '_id` = `' . $aliasChild . '`.`id` AND ';
+                            $conditionsChild .= '`' . $joinTable . '`.`' . $this->_model . '_id` = \'' . $tempResults[$this->_model]['id'] . '\'';
 
                             $fromChild = substr($fromChild, 0, -1);
 
@@ -315,14 +314,14 @@ class DB
                                 while ($rowChild = mysqli_fetch_row($resultChild)) {
 
                                     for ($j = 0; $j < $numOfFieldsChild; ++$j) {
-                                        $tempResultsChild[$tableChild[$j]][$fieldChild[$j]] = $rowChild[$j];
+                                        $tempResultsChild[$fieldChild[$j]] = $rowChild[$j];
                                     }
 
                                     array_push($resultsChild, $tempResultsChild);
                                 }
                             }
 
-                            $tempResults[$aliasChild] = $resultsChild;
+                            $tempResults[$singularAliasChild] = $resultsChild;
                             if (!empty($resultChild)) {
                                 mysqli_free_result($resultChild);
                             }
@@ -387,7 +386,7 @@ class DB
                     while ($row = mysqli_fetch_row($this->_result)) {
 
                         for ($i = 0; $i < $numOfFields; ++$i) {
-                            $table[$i] = ucfirst($inflect->singularize($table[$i]));
+                            $table[$i] = strtolower($inflect->singularize($table[$i]));
                             $tempResults[$table[$i]][$field[$i]] = $row[$i];
                         }
 

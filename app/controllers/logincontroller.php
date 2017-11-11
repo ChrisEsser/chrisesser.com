@@ -28,8 +28,16 @@ class LoginController extends BaseController
 
         }
 
+        if (!password_verify($_POST['password'], $user[0]['User']['password'])) {
+            addSiteError('Invalid password');
+            Redirect::back();
+        }
 
-        $_SESSION['frame']['auth']['loggedInUser'] = $user[0]['User'];
+
+        $_SESSION['frame']['auth']['loggedInUser'] = [
+            'id' => $user[0]['User']['id'],
+            'username' => $user[0]['User']['username'],
+        ];
         Redirect::backTwo();
 
     }

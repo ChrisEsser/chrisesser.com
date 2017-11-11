@@ -1,7 +1,13 @@
+body, html {
+    background-color: #F6F8F8;
+}
+
 .buy-btn-group {
     display: flex;
     margin: auto;
     margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .buy-btn-group button {
@@ -516,9 +522,6 @@
     text-decoration: none;
 }
 
-body {
-    background-color: #FAFAFA;
-}
 .trade-graph-top-bar {
     margin-bottom: 12px;
     border-bottom: 1px solid lightgray;

@@ -1,35 +1,3 @@
-<?php
-
-use ChrisEsser\GDAXExchange;
-
-$exchange = new GDAXExchange\Exchange();
-
-$exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
-$accounts = $exchange->accounts();
-
-$balance = $btcBalance = $ethBalance = $ltcBalance = 0;
-foreach ($accounts as $account) {
-    if ($account['currency'] == 'USD') {
-        $balance = $account['balance'];
-    } else if ($account['currency'] == 'BTC') {
-        $btcBalance = $account['balance'];
-    } else if ($account['currency'] == 'ETH') {
-        $ethBalance = $account['balance'];
-    } else if ($account['currency'] == 'LTC') {
-        $ltcBalance = $account['balance'];
-    }
-}
-
-$btcUsd = $exchange->ticker('BTC-USD')['price'];
-$ethUsd = $exchange->ticker('ETH-USD')['price'];
-$ltcUsd = $exchange->ticker('LTC-USD')['price'];
-
-$btcBalance += 0.01325925;
-//$balance += 58.34;
-
-
-?>
-
 <div class="small-top-bar"><span id="order-label">Buy</span> <span id="coin-label">Bitcoin</span></div>
 <div class="top-gap-fix"></div>
 
