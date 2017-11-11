@@ -331,10 +331,12 @@ $btcBalance += 0.01325925;
     }
 
     .orders-header {
-        width: 100%;
         padding: 15px;
         background-color: #5D656C;
         color: #FFFFFF;
+        margin: -15px -15px 0;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
     }
 
     .orders-header div {
@@ -403,116 +405,125 @@ $btcBalance += 0.01325925;
             </div>
         </div>
 
+
         <div class="order-book-snapshot">
             <div id="order-book-snapshot-price">0.0</div>
             <div id="order-book-sells" role="button" ></div>
             <div id="order-book-buys" role="button"></div>
         </div>
 
-        <ul class="order-type-list">
-            <li class="order-type-item active">MARKET</li>
-            <li class="order-type-item">LIMIT</li>
-            <li class="order-type-item">STOP</li>
-        </ul>
+        <div class="buy-balance-container panel">
 
-        <ul class="buy-sell-btn">
-            <li class="buy-sell-btn-item buy buy-active">BUY</li>
-            <li class="buy-sell-btn-item sell">SELL</li>
-        </ul>
+            <div class="panel-body">
 
-<!--    <div>-->
-<!--        <span style="color: green" id="test-buys"></span>&emsp;-->
-<!--        <span style="color: red" id="test-sells"></span>-->
-<!--    </div>-->
+                <ul class="order-type-list">
+                    <li class="order-type-item active">MARKET</li>
+                    <li class="order-type-item">LIMIT</li>
+                    <li class="order-type-item">STOP</li>
+                </ul>
+
+                <ul class="buy-sell-btn">
+                    <li class="buy-sell-btn-item buy buy-active">BUY</li>
+                    <li class="buy-sell-btn-item sell">SELL</li>
+                </ul>
+
+    <!--    <div>-->
+    <!--        <span style="color: green" id="test-buys"></span>&emsp;-->
+    <!--        <span style="color: red" id="test-sells"></span>-->
+    <!--    </div>-->
 
 
-        <form id="orderForm" name="orderForm" method="POST">
+                <form id="orderForm" name="orderForm" method="POST">
 
-            <input type="hidden" id="side" name="side" value="buy" />
-            <input type="hidden" id="currency" name="currency" value="BTC-USD" />
-            <input type="hidden" id="type" name="type" value="MARKET" />
+                    <input type="hidden" id="side" name="side" value="buy" />
+                    <input type="hidden" id="currency" name="currency" value="BTC-USD" />
+                    <input type="hidden" id="type" name="type" value="MARKET" />
 
-            <!-- amount -->
-            <div class="form-group" id="form-amount-row">
-                <label class="control-label" for="amount">Amount</label>
-                <div class="input-group">
-                    <input class="form-control" type="text" name="amount" id="amount" placeholder="0.00" style="border-right: none" />
-                    <span class="input-group-addon">USD</span>
-                </div>
-            </div>
-
-            <!-- price -->
-            <div class="form-group" id="form-price-row" style="display: none">
-                <label class="control-label" for="amount">Limit Price</label>
-                <div class="input-group">
-                    <input class="form-control" type="text" name="price" id="price" placeholder="0.00" style="border-right: none" />
-                    <span class="input-group-addon">USD</span>
-                </div>
-            </div>
-
-            <div id="advanced-row" style="display: none;">
-
-                <div id="advanced-row-trigger"><i class="fa fa-chevron-right"></i> Advanced</div>
-
-                <div id="advanced-content" style="display: none;">
-
-                    <hr class="line-rule" />
-
-                    <!-- policy -->
-                    <div class="form-group" id="policy-row" style="display: none">
-                        <label class="control-label" for="policy">Time in Force Policy</label>
-                        <select class="form-control" name="policy" id="policy">
-                            <option value="GTC">Good Till Cancelled</option>
-                            <option value="GTT">Good Till Time</option>
-                            <option value="IOC">Immediate or Cancel</option>
-                            <option value="FOK">Fill or Kill</option>
-                        </select>
-                    </div>
-
-                    <!-- limit-price -->
-                    <div class="form-group" id="stop-limit-price" style="display: none">
-                        <label class="control-label" for="limit-price">Limit Price</label>
+                    <!-- amount -->
+                    <div class="form-group" id="form-amount-row">
+                        <label class="control-label" for="amount">Amount</label>
                         <div class="input-group">
-                            <input class="form-control" type="text" name="limit-price" id="limit-price" placeholder="0.00" style="border-right: none" />
+                            <input class="form-control" type="text" name="amount" id="amount" placeholder="0.00" style="border-right: none" />
                             <span class="input-group-addon">USD</span>
                         </div>
                     </div>
 
-                    <!-- cancel_after -->
-                    <div class="form-group" id="cancel_after-row" style="display: none">
-                        <label class="control-label" for="cancel_after">Cancel After</label>
-                        <select class="form-control" name="cancel_after" id="cancel_after">
-                            <option value="min">One Minute</option>
-                            <option value="hour">One Hour</option>
-                            <option value="day">One Day</option>
-                        </select>
+                    <!-- price -->
+                    <div class="form-group" id="form-price-row" style="display: none">
+                        <label class="control-label" for="amount">Limit Price</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="price" id="price" placeholder="0.00" style="border-right: none" />
+                            <span class="input-group-addon">USD</span>
+                        </div>
                     </div>
 
+                    <div id="advanced-row" style="display: none;">
 
-                    <div class="checkbox" id="post-chek-row" style="">
-                        <label><input type="checkbox" name="post_only" id="post_only" value="1" checked />Post Only</label>
+                        <div id="advanced-row-trigger"><i class="fa fa-chevron-right"></i> Advanced</div>
+
+                        <div id="advanced-content" style="display: none;">
+
+                            <hr class="line-rule" />
+
+                            <!-- policy -->
+                            <div class="form-group" id="policy-row" style="display: none">
+                                <label class="control-label" for="policy">Time in Force Policy</label>
+                                <select class="form-control" name="policy" id="policy">
+                                    <option value="GTC">Good Till Cancelled</option>
+                                    <option value="GTT">Good Till Time</option>
+                                    <option value="IOC">Immediate or Cancel</option>
+                                    <option value="FOK">Fill or Kill</option>
+                                </select>
+                            </div>
+
+                            <!-- limit-price -->
+                            <div class="form-group" id="stop-limit-price" style="display: none">
+                                <label class="control-label" for="limit-price">Limit Price</label>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="limit-price" id="limit-price" placeholder="0.00" style="border-right: none" />
+                                    <span class="input-group-addon">USD</span>
+                                </div>
+                            </div>
+
+                            <!-- cancel_after -->
+                            <div class="form-group" id="cancel_after-row" style="display: none">
+                                <label class="control-label" for="cancel_after">Cancel After</label>
+                                <select class="form-control" name="cancel_after" id="cancel_after">
+                                    <option value="min">One Minute</option>
+                                    <option value="hour">One Hour</option>
+                                    <option value="day">One Day</option>
+                                </select>
+                            </div>
+
+
+                            <div class="checkbox" id="post-chek-row" style="">
+                                <label><input type="checkbox" name="post_only" id="post_only" value="1" checked />Post Only</label>
+                            </div>
+
+                        </div>
+
                     </div>
 
+                </form>
+
+                <hr class="line-rule" />
+
+                <div class="total-row">
+                    <div>Total (<span id="total-label">BTC</span>)</div>
+                    <div id="total-value">0.00</div>
+                </div>
+
+
+                <button type="button" class="buy-sell-submit-btn buy-active" id="place-order" style="margin-top: 15px">Place <span id="order-type">buy</span> order</button>
+
+
+                <div id="error-message">
+                    <div class="pull-right" role="button" >X</div>
+                    <span></span>
                 </div>
 
             </div>
 
-        </form>
-
-        <hr class="line-rule" />
-
-        <div class="total-row">
-            <div>Total (<span id="total-label">BTC</span>)</div>
-            <div id="total-value">0.00</div>
-        </div>
-
-
-        <button type="button" class="buy-sell-submit-btn buy-active" id="place-order" style="margin-top: 15px">Place <span id="order-type">buy</span> order</button>
-
-
-        <div id="error-message">
-            <div class="pull-right" role="button" >X</div>
-            <span></span>
         </div>
 
 
@@ -520,46 +531,51 @@ $btcBalance += 0.01325925;
 
     <div class="buy-columns column-right">
 
-        <div class="orders-header">
-            <div>OPEN ORDERS</div>
-            <div><a role="button" data-type="open">Orders</a>&emsp;<a  role="button" data-type="filled">Fills</a> </div>
+        <div class="buy-balance-container panel">
+            <div class="panel-body">
+
+                <div class="orders-header">
+                    <div>OPEN ORDERS</div>
+                    <div><a role="button" data-type="open">Orders</a>&emsp;<a  role="button" data-type="filled">Fills</a> </div>
+                </div>
+
+                <table class="table" id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Filled (<span id="orders-filled-label">BTC</span>)</th>
+                            <th>Price (<span id="orders-price-label">USD</span>)</th>
+                            <th>Fee (<span id="orders-fee-label">USD</span>)</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6"><div class="well">No open orders</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table" id="fills-table" style="display: none">
+                    <thead>
+                    <tr>
+                        <th>Size (<span id="fills-size-label">BTC</span>)</th>
+                        <th>Price (<span id="fills-price-label">USD</span>)</th>
+                        <th>Fee (<span id="fills-fee-label">USD</span>)</th>
+                        <th>Time</th>
+                        <th>Product</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5"><div class="well">No filled orders</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
-
-        <table class="table" id="orders-table">
-            <thead>
-                <tr>
-                    <th>Size</th>
-                    <th>Filled (<span id="orders-filled-label">BTC</span>)</th>
-                    <th>Price (<span id="orders-price-label">USD</span>)</th>
-                    <th>Fee (<span id="orders-fee-label">USD</span>)</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="6"><div class="well">No open orders</div></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table" id="fills-table" style="display: none">
-            <thead>
-            <tr>
-                <th>Size (<span id="fills-size-label">BTC</span>)</th>
-                <th>Price (<span id="fills-price-label">USD</span>)</th>
-                <th>Fee (<span id="fills-fee-label">USD</span>)</th>
-                <th>Time</th>
-                <th>Product</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="5"><div class="well">No filled orders</div></td>
-                </tr>
-            </tbody>
-        </table>
-
     </div>
 
 </div>
@@ -1007,6 +1023,8 @@ $btcBalance += 0.01325925;
                 if (result.result && result.result == 'error') {
 
                     $('#error-message').show().find('span').text(result.message);
+                    console.log(result.error_fields);
+
                     if (result.error_fields) {
                         for (i = 0; i < result.error_fields.length; i++) {
                             $('#' + result.error_fields[i]).closest('.form-group').addClass('has-error');

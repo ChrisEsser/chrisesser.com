@@ -15,7 +15,8 @@ class AjaxController extends BaseController
         $this->render = 0;
         header('Content-Type: application/json');
 
-        $this->exchange = new Coinexchange();
+
+        $this->exchange = new ChrisEsser\GDAXExchange\Exchange();
         $this->exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
         $this->accounts = $this->exchange->accounts();
 
@@ -41,7 +42,7 @@ class AjaxController extends BaseController
             // check for required fields
             $errorFields = [];
             if (empty($_POST['side']) || $_POST['side'] != 'buy') $errorFields[] = 'side';
-            if (empty($_POST['coin'])) $errorFields[] = 'coin';
+            if (empty($_POST['currency'])) $errorFields[] = 'currency';
             if (empty($_POST['type'])) $errorFields[] = 'type';
             if (empty($_POST['amount'])) $errorFields[] = 'amount';
             if(($_POST['type'] == 'LIMIT' || $_POST['type'] == 'STOP') && empty($_POST['price'])) $errorFields[] = 'price';
