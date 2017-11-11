@@ -16,5 +16,9 @@
 </head>
 <body>
 
+<div class="container">
+    <?= displaySiteErrors(); ?>
+</div>
+
 
 

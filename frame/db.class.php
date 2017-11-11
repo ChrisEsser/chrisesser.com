@@ -180,6 +180,7 @@ class DB
 
         $this->_query = 'SELECT * FROM ' . $from . ' WHERE ' . $conditions;
 
+
         $this->_result = mysqli_query($this->_dbHandle, $this->_query);
         $result = [];
         $table = [];

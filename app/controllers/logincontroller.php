@@ -17,17 +17,20 @@ class LoginController extends BaseController
     {
         $this->render = 0;
 
-        // do stuff
+        $user = new User();
+        $user->where('username', $_POST['email']);
+        $user->setLimit(1);
+        $user = $user->search();
 
-        $_SESSION['frame']['auth']['loggedInUser'] = [
-            'id' => 1,
-            'slug' => 'chris-esser',
-            'name' => 'Chris Esser',
-        ];
+        if (empty($user)) {
+            addSiteError('That email does not exist');
+            Redirect::back();
+
+        }
 
 
+        $_SESSION['frame']['auth']['loggedInUser'] = $user[0]['User'];
         Redirect::backTwo();
-
 
     }
 

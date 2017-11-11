@@ -1,3 +1,477 @@
+.buy-btn-group {
+    display: flex;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.buy-btn-group button {
+    flex: 1;
+    border: 1px solid #3A444D;
+    background-color: transparent;
+    padding: 3px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.buy-btn-group button.active {
+    background-color: #3A444D;
+    color: #fff;
+}
+
+
+.toggle-switch-input {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle-switch-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 48px;
+    height: 24px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+.toggle-switch-label:after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 22px;
+    transition: 0.3s;
+}
+
+.toggle-switch-input:checked + label {
+    background: #bada55;
+}
+
+.toggle-switch-input:checked + label:after {
+    left: calc(100% - 1px);
+    transform: translateX(-100%);
+}
+
+.toggle-switch-input:active:after {
+    width: 48px;
+}
+
+.switch-container {
+    float: right;
+}
+.switch-container div {
+    display: inline-block;
+    height: 40px;
+}
+
+
+.buy-balance-container {
+    margin: 0;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.buy-balance-container h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.order-type-list {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #838A8F;
+    list-style: none;
+    padding: 0;
+}
+
+.order-type-item {
+    flex: 1;
+    margin-bottom: -2px;
+    padding: 3px;
+    border-bottom: 2px solid transparent;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .2s ease-in-out,color .2s ease-in-out;
+    list-style: none;
+    color: #838A8F;
+    font-size: 14px;
+}
+
+.order-type-list li.active {
+    /*border-bottom-color: #4DA53C;*/
+    color: #fff;
+    background-color: #3A444D;
+}
+
+.buy-sell-btn {
+    display: flex;
+    background-color: #404a52;
+    list-style: none;
+    padding-left: 0;
+}
+.buy-sell-btn:first-child {
+    margin-right: 1px;
+}
+
+.buy-sell-btn-item {
+    flex: 1;
+    border-radius: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 30px;
+    text-align: center;
+    color: hsla(0,0%,100%,.5);
+    background-color: hsla(0,0%,100%,.15);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color .2s ease-in-out;
+}
+
+.buy-active {
+    background-color: #4da53c;
+    color: #fff;
+}
+.sell-active {
+    background-color: #FF6939;
+    color: #fff;
+}
+
+
+.buy-sell-submit-btn {
+    width: 100%;
+    height: 44px;
+    margin: 0 auto;
+    padding: 13px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    transition: none;
+    transition: background-color .3s;
+    outline: 0 none!important;
+    border: none;
+    transition: all .2s ease;
+}
+
+.input-group-addon {
+    background-color: transparent;
+    border-left: none;
+}
+
+
+.line-rule {
+    color: #838A8F;
+    background-color: #838A8F;
+    height: 2px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.total-row {
+    display:  flex;
+    margin-top: -7px;
+}
+
+.total-row div {
+    flex: 1
+}
+
+.total-row div:first-child {
+    text-align: left;
+}
+.total-row div:last-child {
+    text-align: right;
+}
+
+.form-control:focus {
+    border: 1px solid #ccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.order-book-snapshot {
+    background-color: transparent;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.order-book-snapshot div {
+    padding: 0;
+    color: white;
+    font-size: 9px;
+}
+
+#order-book-snapshot-price {
+    float: right;
+    text-align: right;
+    font-size: 14px;
+    color: #3A444D;
+}
+
+#order-book-buys {
+    background-color: #4DA53C;
+    width: 1%;
+}
+#order-book-sells {
+    background-color: #FF6939;
+    width: 1%;
+}
+
+#error-message {
+    display: none;
+    position: relative;
+    background: #f2dede;
+    color: #a94442;
+    line-height: 22px;
+    font-size: 15px;
+    padding: 10px 10px 10px 50px;
+    word-wrap: break-word;
+    border: 1px solid #a94442;
+    margin: 10px 0;
+    border-radius: 3px;
+}
+
+#error-message:before {
+    content: '\f06a';
+    font-family: "FontAwesome";
+    color: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    left: 8px;
+    line-height: 22px;
+    z-index: 1;
+}
+
+#error-message:after {
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    background: #a94442;
+}
+
+.buy-columns {
+    width: 50%;
+    display: inline-block;
+    padding: 0;
+    float: left;
+}
+.column-left {
+    padding-right: 7px;
+}
+.column-right {
+    padding-left: 7px;
+}
+
+
+@media (max-width: 768px) {
+    .buy-columns {
+        width: 100%;
+        display: block;
+        float: none;
+        padding: 0;
+    }
+    .column-right {
+        margin-top: 20px;
+    }
+}
+
+.orders-header {
+    padding: 15px;
+    background-color: #5D656C;
+    color: #FFFFFF;
+    margin: -15px -15px 0;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.orders-header div {
+    display: inline-block;
+}
+
+.orders-header div:first-child {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.orders-header div:nth-child(2) {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    float: right;
+}
+
+.orders-header div:nth-child(2) a {
+    text-decoration: underline;
+    color: #FFFFFF;
+}
+
+.orders-header div:nth-child(2) a:nth-child(2) {
+    color: #A8B2B5;
+}
+
+.card-container.card {
+    max-width: 350px;
+    padding: 40px 40px;
+}
+
+.btn {
+    font-weight: 700;
+    height: 36px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.card {
+    background-color: #F7F7F7;
+    padding: 20px 25px 30px;
+    margin: 0 auto 25px;
+    margin-top: 50px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.profile-name-card {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0 0;
+    min-height: 1em;
+}
+
+.reauth-email {
+    display: block;
+    color: #404040;
+    line-height: 2;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-signin #inputEmail,
+.form-signin #inputPassword {
+    direction: ltr;
+    height: 44px;
+    font-size: 16px;
+}
+
+.form-signin input[type=email],
+.form-signin input[type=password],
+.form-signin input[type=text],
+.form-signin button {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    z-index: 1;
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+    border-color: rgb(104, 145, 162);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+}
+
+.btn.btn-signin {
+    padding: 0px;
+    font-weight: 700;
+    font-size: 14px;
+    height: 36px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: none;
+    transition: all 0.218s;
+}
+
+.forgot-password {
+    color: rgb(104, 145, 162);
+}
+
+.error {
+    position: relative;
+    background: #f2dede;
+    color: #a94442;
+    line-height: 22px;
+    font-size: 15px;
+    padding: 10px 10px 10px 50px;
+    word-wrap: break-word;
+    border: 1px solid #a94442;
+    margin: 10px 0;
+    border-radius: 3px;
+}
+.error:before {
+    content: '\f06a';
+    font-family: "FontAwesome";
+    color: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    left: 8px;
+    line-height: 22px;
+    z-index: 1;
+}
+.error:after {
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    background: #a94442;
+}
+
 #trade-nav-footer {
     position: fixed;
     bottom: 0;
