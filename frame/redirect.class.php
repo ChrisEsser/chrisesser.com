@@ -15,7 +15,7 @@ class Redirect
         self::to($url);
     }
 
-    public function backTwo()
+    public static function backTwo()
     {
         if (empty($_SESSION['frame']['redirect']['queue'])) {
             self::to(BASE_PATH);

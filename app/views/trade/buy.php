@@ -1,6 +1,9 @@
 <?php
 
-$exchange = new Coinexchange();
+use ChrisEsser\GDAXExchange;
+
+$exchange = new GDAXExchange\Exchange();
+
 $exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
 $accounts = $exchange->accounts();
 
@@ -22,7 +25,7 @@ $ethUsd = $exchange->ticker('ETH-USD')['price'];
 $ltcUsd = $exchange->ticker('LTC-USD')['price'];
 
 $btcBalance += 0.01325925;
-$balance += 58.34;
+//$balance += 58.34;
 
 
 ?>
@@ -323,9 +326,46 @@ $balance += 58.34;
             padding: 0;
         }
         .column-right {
-
+            margin-top: 20px;
         }
     }
+
+    .orders-header {
+        width: 100%;
+        padding: 15px;
+        background-color: #5D656C;
+        color: #FFFFFF;
+    }
+
+    .orders-header div {
+        display: inline-block;
+    }
+
+    .orders-header div:first-child {
+        font-size: 17px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .orders-header div:nth-child(2) {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+        float: right;
+    }
+
+    .orders-header div:nth-child(2) a {
+        text-decoration: underline;
+        color: #FFFFFF;
+    }
+
+    .orders-header div:nth-child(2) a:nth-child(2) {
+        color: #A8B2B5;
+    }
+
+
+
+
 
 
 
@@ -479,8 +519,47 @@ $balance += 58.34;
     </div>
 
     <div class="buy-columns column-right">
-        Orders
-        <hr />
+
+        <div class="orders-header">
+            <div>OPEN ORDERS</div>
+            <div><a role="button" data-type="open">Orders</a>&emsp;<a  role="button" data-type="filled">Fills</a> </div>
+        </div>
+
+        <table class="table" id="orders-table">
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Filled (<span id="orders-filled-label">BTC</span>)</th>
+                    <th>Price (<span id="orders-price-label">USD</span>)</th>
+                    <th>Fee (<span id="orders-fee-label">USD</span>)</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6"><div class="well">No open orders</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table" id="fills-table" style="display: none">
+            <thead>
+            <tr>
+                <th>Size (<span id="fills-size-label">BTC</span>)</th>
+                <th>Price (<span id="fills-price-label">USD</span>)</th>
+                <th>Fee (<span id="fills-fee-label">USD</span>)</th>
+                <th>Time</th>
+                <th>Product</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5"><div class="well">No filled orders</div></td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
 </div>
@@ -945,14 +1024,31 @@ $balance += 58.34;
 
         });
 
-        function clearErrors()
-        {
+        function clearErrors() {
             $('#error-message').hide();
             $('#orderForm').children('.form-group').removeClass('has-error');
         }
 
         $('#error-message div:first-child').click(function() {
             clearErrors();
+        });
+
+
+        $('.orders-header a').click(function() {
+            type = $(this).data('type');
+            $('.orders-header a').css({color: '#A8B2B5'});
+            if (type == 'open') {
+                $('#fills-table').hide();
+                $('#orders-table').show();
+                $('.orders-header div:first-child').text('OPEN ORDERS');
+                $(this).css({color: '#FFFFFF'});
+            } else if (type == 'filled') {
+                $('#orders-table').hide();
+                $('#fills-table').show();
+                $('.orders-header div:first-child').text('FILLED ORDERS');
+                $(this).css({color: '#FFFFFF'});
+            }
+
         });
 
     });

@@ -1,6 +1,8 @@
 <?php
 
-    $exchange = new Coinexchange();
+    use ChrisEsser\GDAXExchange;
+
+    $exchange = new GDAXExchange\Exchange();
     $exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
     $accounts = $exchange->accounts();
     $cbAccounts = $exchange->coinbase_accounts();

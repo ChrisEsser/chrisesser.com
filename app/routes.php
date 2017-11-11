@@ -16,5 +16,6 @@ $router->addRoutes([
     ['POST', '/trade/ajax/sell', 'AjaxController#sell'],
 
     ['GET', '/login', 'LoginController#login'],
+    ['POST', '/auth/login', 'LoginController#auth'],
 
 ]);

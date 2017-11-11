@@ -4,8 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "913950ad60dd11bbcdf3b8f3c8b0c052",
+    "content-hash": "8e21f686b7cb54c9d98b68b367d180ee",
     "packages": [
+        {
+            "name": "chrisesser/gdaxexchange",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ChrisEsser/gdaxexchange.git",
+                "reference": "bb7a81ecc7b01a8d2bb58d60898ad120e943e431"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ChrisEsser/gdaxexchange/zipball/bb7a81ecc7b01a8d2bb58d60898ad120e943e431",
+                "reference": "bb7a81ecc7b01a8d2bb58d60898ad120e943e431",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ChrisEsser\\GDAXExchange\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "description": "GDAX Exchange API Class",
+            "time": "2017-11-11T01:21:45+00:00"
+        },
         {
             "name": "vlucas/phpdotenv",
             "version": "v2.4.0",
@@ -60,7 +87,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "chrisesser/gdaxexchange": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
