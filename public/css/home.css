@@ -1,0 +1,88 @@
+.card {
+    cursor: pointer;
+    color: white;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.card-content {
+    margin-left: 70px;
+}
+
+.card-content h4 {
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+.card:before {
+    font-family: "FontAwesome";
+    position: absolute;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 400;
+    z-index: 1;
+    left: 26px;
+    height: 100%;
+    vertical-align: middle;
+    opacity: .25;
+    top: 0;
+}
+
+.card:after {
+    content: '';
+    height: 100%;
+    left: 15px;
+    position: absolute;
+    top: 0;
+    width: 70px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.card-trade {
+    background-color: #37BC9B;
+}
+.card-trade:before {
+    content: '\f201';
+}
+.card-trade:after {
+    background: #2B957A;
+}
+
+.card-portfolio {
+    background-color: #5D9CEC;
+}
+.card-portfolio:before {
+    content: '\f0f2';
+}
+.card-portfolio:after {
+    background: #2F80E7;
+}
+
+.card-resume {
+    background-color: #7266BA;
+}
+.card-resume:before {
+    content: '\f007';
+    left: 32px;
+}
+.card-resume:after {
+    background: #564AA3;
+}
+
+.row-eq-height {
+    display: flex;
+}
+.row-eq-height>div div:first-child {
+    height: 100%;
+}
+
+@media (max-width: 767px) {
+    .row-eq-height {
+        display: block;
+    }
+    .row-eq-height>div {
+        margin-bottom: 20px;
+    }
+}

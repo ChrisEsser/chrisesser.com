@@ -17,7 +17,7 @@ class Auth
     {
         $objUser = new User();
         $objUser->id = $userId;
-        $user = $objUser->search()['User'];
+        $user = $objUser->search()['user'];
 
         $_SESSION['frame']['auth']['loggedInUser'] = [
             'id' => $user['id'],

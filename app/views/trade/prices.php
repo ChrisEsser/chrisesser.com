@@ -1,7 +1,5 @@
-
-
 <div class="trade-charts-top">
-    <div class="my-money-label">$<span id="current-balance"><?=number_format($balance, 2)?></span></div>
+    <div class="my-money-label">$<span id="current-balance"><?=number_format($usdBalance, 2)?></span></div>
     <div class="my-account-link"><a href="<?=BASE_PATH?>/trade/accounts">Your Accounts <i class="fa fa-arrow-right"></i></a></div>
 </div>
 
@@ -61,9 +59,8 @@
 </div>
 
 
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
 <script>
 
 $(document).ready(function() {
@@ -73,106 +70,13 @@ $(document).ready(function() {
         legend: {display: false}
     };
 
-    d = new Date();
-    var end = d.toISOString();
+    loadChart('BTC-USD');
+    loadChart('ETH-USD');
+    loadChart('LTC-USD');
 
-    $.getJSON( "https://api.gdax.com/products/BTC-USD/candles", {granularity: 900}, function( data ) {
-    }).done(function(data) {
-
-        var closeData = [];
-        var timeData = [];
-        for (var j = 95; j >= 0; j--) {
-            closeData.push(data[j][4]);
-            var date = new Date(data[j][0]*1000);
-            var hours = date.getHours();
-            var minutes = "0" + date.getMinutes();
-            var formattedTime = hours + ':' + minutes.substr(-2);
-            timeData.push(formattedTime);
-        }
-
-        chartObj = $('#btc-chart');
-        var chart = new Chart(chartObj, {
-            type: 'line',
-            data: {
-                labels: timeData,
-                datasets: [{
-                    label: 'BTH-USD - Close',
-                    data: closeData,
-                    backgroundColor:"#F4A460",
-                    pointRadius: 0
-                }]
-            },
-            options: chart_options
-        });
-
-    });
-
-    $.getJSON( "https://api.gdax.com/products/ETH-USD/candles", {granularity: 900}, function( data ) {
-    }).done(function(data) {
-
-        var closeData = [];
-        var timeData = [];
-        for (var j = 95; j >= 0; j--) {
-            closeData.push(data[j][4]);
-            var date = new Date(data[j][0]*1000);
-            var hours = date.getHours();
-            var minutes = "0" + date.getMinutes();
-            var formattedTime = hours + ':' + minutes.substr(-2);
-            timeData.push(formattedTime);
-        }
-
-        chartObj = $('#eth-chart');
-        chartObj.height = 100;
-
-        var chart = new Chart(chartObj, {
-            type: 'line',
-            data: {
-                labels: timeData,
-                datasets: [{
-                    label: 'ETH-USD',
-                    data: closeData,
-                    backgroundColor:"#9370DB",
-                    pointRadius: 0
-                }]
-            },
-            options: chart_options
-        });
-    });
-
-    $.getJSON( "https://api.gdax.com/products/LTC-USD/candles", {granularity: 900}, function( data ) {
-    }).done(function(data) {
-
-        var closeData = [];
-        var timeData = [];
-        for (var j = 95; j >= 0; j--) {
-            closeData.push(data[j][4]);
-            var date = new Date(data[j][0]*1000);
-            var hours = date.getHours();
-            var minutes = "0" + date.getMinutes();
-            var formattedTime = hours + ':' + minutes.substr(-2);
-            timeData.push(formattedTime);
-        }
-
-        chartObj = $('#ltc-chart');
-
-        var chart = new Chart(chartObj, {
-            type: 'line',
-            data: {
-                labels: timeData,
-                datasets: [{
-                    label: 'LTC-USD',
-                    data: closeData,
-                    backgroundColor:"#335F89",
-                    pointRadius: 0
-                }]
-            },
-            options: chart_options
-        });
-    });
-
-    var btBalance = (<?=$btcBalance?>) ? <?=$btcBalance?> : 0;
-    var ethBalance = (<?=$ethBalance?>) ? <?=$ethBalance?> : 0;
-    var ltcBalance = (<?=$ltcBalance?>) ? <?=$ltcBalance?> : 0;
+    var btBalance = ('<?=$btcBalance?>') ? <?=$btcBalance?> : 0;
+    var ethBalance = ('<?=$ethBalance?>') ? <?=$ethBalance?> : 0;
+    var ltcBalance = ('<?=$ltcBalance?>') ? <?=$ltcBalance?> : 0;
     var btcusd = 0;
     var etcusd = 0;
     var ltcusd = 0;
@@ -203,7 +107,7 @@ $(document).ready(function() {
                 ltcusd = ltcBalance * msg.price;
             }
 
-            var accountBallance = (<?=$balance?>) ? <?=$balance?> : 0;
+            var accountBallance = ('<?=$usdBalance?>') ? <?=$usdBalance?> : 0;
             accountBallance = accountBallance + btcusd + etcusd + ltcusd;
 
 
@@ -211,6 +115,52 @@ $(document).ready(function() {
             $('#current-balance').text(parseFloat(accountBallance).toFixed(2));
         }
     };
+
+    function loadChart(currency) {
+
+        var color = '';
+
+        $.getJSON( "https://api.gdax.com/products/" + currency + "/candles", {granularity: 900}, function( data ) {
+        }).done(function(data) {
+
+            var closeData = [];
+            var timeData = [];
+            for (var j = 95; j >= 0; j--) {
+                closeData.push(data[j][4]);
+                var date = new Date(data[j][0]*1000);
+                var hours = date.getHours();
+                var minutes = "0" + date.getMinutes();
+                var formattedTime = hours + ':' + minutes.substr(-2);
+                timeData.push(formattedTime);
+            }
+
+            if (currency == 'BTC-USD') {
+                chartObj = $('#btc-chart');
+                color = '#F4A460';
+            } else if (currency == 'ETH-USD') {
+                chartObj = $('#eth-chart');
+                color = '#9370DB';
+            } else if (currency == 'LTC-USD') {
+                chartObj = $('#ltc-chart');
+                color = '#335F89';
+            }
+
+            var chart = new Chart(chartObj, {
+                type: 'line',
+                data: {
+                    labels: timeData,
+                    datasets: [{
+                        label: currency + ' - Close',
+                        data: closeData,
+                        backgroundColor: color,
+                        pointRadius: 0
+                    }]
+                },
+                options: chart_options
+            });
+
+        });
+    }
 
 });
 

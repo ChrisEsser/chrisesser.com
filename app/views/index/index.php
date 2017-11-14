@@ -1,25 +1,50 @@
+<link rel="stylesheet" href="<?=BASE_PATH?>/css/home.css">
 
-<style>
-    a:hover {
-        background-color: #cccccc;
-        text-decoration: none;
-    }
-    a {
-        text-decoration: none;
-    }
-</style>
+<div class="container">
 
-<div class="container" style="text-align: center; font-size: 33px; margin-top: 50px;">
-    <div class="col-sm-4">
-        <div class="panel panel-default"><a href="<?=BASE_PATH?>/trade" style="display: block; height: 100px; line-height: 100px;">Trade</a></div>
+    <div class="row row-eq-height" style="margin-top: 50px;">
+
+        <div class="col-md-4" data-url="<?=BASE_PATH?>/trade">
+            <div class="card card-trade">
+                <div class="card-content">
+                    <h4 class="card-title">Trade</h4>
+                    <p class="category">Bitcoin toadding application using GDAX API.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-url="<?=BASE_PATH?>/portfolio">
+            <div class="card card-portfolio">
+                <div class="card-content">
+                    <h4 class="card-title">Portfolio</h4>
+                    <p class="category">Screen shots and images of projects I've worked on.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" data-url="<?=BASE_PATH?>/resume">
+            <div class="card card-resume">
+                <div class="card-content">
+                    <h4 class="card-title">Resume</h4>
+                    <p class="category">An HTML version of my resume.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="col-sm-4">
-        <div class="panel panel-default"><a href="<?=BASE_PATH?>/portfolio" style="display: block; height: 100px; line-height: 100px;">Portfolio</a></div>
-    </div>
-    <div class="col-sm-4">
-        <div class="panel panel-default"><a href="<?=BASE_PATH?>/resume" style="display: block; height: 100px; line-height: 100px;">resume</a></div>
-    </div>
+
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.row-eq-height .col-md-4').click(function() {
+            document.location = $(this).data('url');
+        });
+    });
+</script>
+
+
+
 
 
 

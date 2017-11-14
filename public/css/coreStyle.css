@@ -1,5 +1,12 @@
+/*body, html {*/
+    /*background-color: #F6F8F8;*/
+/*}*/
+
 body, html {
-    background-color: #F6F8F8;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(#abbaab, #ffffff);
 }
 
 .buy-btn-group {
@@ -213,7 +220,6 @@ body, html {
 .order-book-snapshot {
     background-color: transparent;
     width: 100%;
-    margin-bottom: 15px;
 }
 
 .order-book-snapshot div {
@@ -307,7 +313,7 @@ body, html {
     padding: 15px;
     background-color: #5D656C;
     color: #FFFFFF;
-    margin: -15px -15px 0;
+    margin: -16px -16px 0;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
 }
@@ -403,6 +409,18 @@ body, html {
     direction: ltr;
     height: 44px;
     font-size: 16px;
+}
+
+.form-signin textarea {
+    font-size: 16px;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    z-index: 1;
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .form-signin input[type=email],
@@ -550,9 +568,9 @@ body, html {
     height: 170px;
     width: 100%;
     background-color: #17252E;
-    top: 0;
     text-align: center;
     color: white;
+    top: 30px;
 }
 .my-money-label {
     font-size: 32px;

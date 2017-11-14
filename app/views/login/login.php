@@ -2,11 +2,14 @@
     body, html {
         height: 100%;
         background-repeat: no-repeat;
-        background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+        background-image: linear-gradient(#abbaab, #ffffff);
     }
 </style>
 
 <div class="container">
+
+    <?=HTML::displaySiteErrors()?>
+
     <div class="card card-container">
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
         <p id="profile-name" class="profile-name-card"></p>

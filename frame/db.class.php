@@ -502,11 +502,11 @@ class DB
         $db = $this->_dbHandle;
 
         $this->_result = mysqli_query($this->_dbHandle, $query);
-        $this->clear();
 
         if ($this->_result) {
+            $id = $this->id;
             $this->clear();
-            return mysqli_insert_id($db);
+            return (!empty($id)) ? true : mysqli_insert_id($db);
         }
 
         /** Errors **/

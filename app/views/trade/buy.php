@@ -1,7 +1,3 @@
-<div class="small-top-bar"><span id="order-label">Buy</span> <span id="coin-label">Bitcoin</span></div>
-<div class="top-gap-fix"></div>
-
-
 <div class="container">
 
     <div class="buy-btn-group" role="group">
@@ -21,7 +17,7 @@
                 <h4>BALANCE</h4>
                 <div style="margin-top: 7px;" class="row">
                     <div class="col-xs-6" id="conversion-label">USD</div>
-                    <div class="col-xs-6" id="conversion-value" role="button" style="text-align: right;"><?=number_format($balance, 2)?></div>
+                    <div class="col-xs-6" id="conversion-value" role="button" style="text-align: right;"><?=number_format($usdBalance, 2)?></div>
                 </div>
                 <div style="margin-top: 7px;" class="row">
                     <div class="col-xs-6" id="balance-currency-label" style="width: 50%; display: inline-block">BTC</div>
@@ -31,10 +27,14 @@
         </div>
 
 
-        <div class="order-book-snapshot">
-            <div id="order-book-snapshot-price">0.0</div>
-            <div id="order-book-sells" role="button" ></div>
-            <div id="order-book-buys" role="button"></div>
+        <div class="buy-balance-container panel">
+            <div class="panel-body">
+                <div class="order-book-snapshot">
+                    <div id="order-book-snapshot-price">0.0</div>
+                    <div id="order-book-sells" role="button" ></div>
+                    <div id="order-book-buys" role="button"></div>
+                </div>
+            </div>
         </div>
 
         <div class="buy-balance-container panel">
@@ -42,13 +42,13 @@
             <div class="panel-body">
 
                 <ul class="order-type-list">
-                    <li class="order-type-item active">MARKET</li>
+                    <li class="order-type-item">MARKET</li>
                     <li class="order-type-item">LIMIT</li>
                     <li class="order-type-item">STOP</li>
                 </ul>
 
                 <ul class="buy-sell-btn">
-                    <li class="buy-sell-btn-item buy buy-active">BUY</li>
+                    <li class="buy-sell-btn-item buy ">BUY</li>
                     <li class="buy-sell-btn-item sell">SELL</li>
                 </ul>
 
@@ -84,7 +84,7 @@
 
                     <div id="advanced-row" style="display: none;">
 
-                        <div id="advanced-row-trigger"><i class="fa fa-chevron-right"></i> Advanced</div>
+                        <div id="advanced-row-trigger" role="button"><i class="fa fa-chevron-right"></i> Advanced</div>
 
                         <div id="advanced-content" style="display: none;">
 
@@ -224,13 +224,13 @@
             'LTC-BTC': 0.0
         };
     
-        chanceScreen(side, currency, type);
+        chanceScreen(side, currency, type, true);
     
-        function chanceScreen(side, currency, type) {
+        function chanceScreen(side, currency, type, init = false) {
             clearForm();
-            changeBuySell(side);
-            changeCurrency(currency);
-            changeOrderType(type);
+            changeBuySell(side, init);
+            changeCurrency(currency, init);
+            changeOrderType(type, init);
             changeTotalLabels();
             changeTotal();
         }
@@ -250,21 +250,21 @@
             }
         }
     
-        function changeBuySell (newSide) {
-            if (newSide != side) {
+        function changeBuySell (newSide, init = false) {
+            if (newSide != side || init) {
                 side = newSide;
                 if (side == 'buy') {
                     $('.buy-sell-btn-item:first-child').addClass('buy-active');
                     $('.buy-sell-btn-item:last-child').removeClass('sell-active');
                     $('#order-type').text('buy');
                     $('#order-label').text('Buy');
-                    $('.buy-sell-submit-btn').toggleClass('buy-active sell-active');
+                    if (!init) { $('.buy-sell-submit-btn').toggleClass('buy-active sell-active'); }
                 } else if (side == 'sell') {
                     $('.buy-sell-btn-item:last-child').addClass('sell-active');
                     $('.buy-sell-btn-item:first-child').removeClass('buy-active');
                     $('#order-type').text('sell');
                     $('#order-label').text('Sell');
-                    $('.buy-sell-submit-btn').toggleClass('buy-active sell-active');
+                    if (!init) { $('.buy-sell-submit-btn').toggleClass('buy-active sell-active'); }
                     $('#form-amount-row').find('span').text(currency);
                 }
                 $('#side').val(side);
@@ -362,58 +362,58 @@
             }
         }
     
-        function changeCurrency(newCurrency)
+        function changeCurrency(newCurrency, init = false)
         {
-            if (currency != newCurrency) {
+            if (currency != newCurrency || init) {
                 currency = newCurrency;
-                $('.buy-btn-group button').removeClass('active');
+                if (!init) $('.buy-btn-group button').removeClass('active');
                 if (currency == 'BTC-USD') {
 
                     $('#coin-label').text('Bitcoin');
-                    $('#balance-value').text(<?=number_format($btcBalance, 8)?>);
+                    $('#balance-value').text('<?=number_format($btcBalance, 8)?>');
                     $('#balance-currency-label').text('BTC');
                     $('#conversion-label').text('USD');
-                    $('#conversion-value').text(<?=number_format($balance, 2)?>);
+                    $('#conversion-value').text('<?=number_format($usdBalance, 2)?>');
 
                 } else if (currency == 'ETH-USD') {
 
                     $('#coin-label').text('Ethereum');
-                    $('#balance-value').text(<?=number_format($ethBalance, 8)?>);
+                    $('#balance-value').text('<?=number_format($ethBalance, 8)?>');
                     $('#balance-currency-label').text('ETH');
                     $('#conversion-label').text('USD');
-                    $('#conversion-value').text(<?=number_format($balance, 2)?>);
+                    $('#conversion-value').text('<?=number_format($usdBalance, 2)?>');
 
                 } else if (currency == 'LTC-USD') {
 
                     $('#coin-label').text('Litecoin');
-                    $('#balance-value').text(<?=number_format($ltcBalance, 9)?>);
+                    $('#balance-value').text('<?=number_format($ltcBalance, 9)?>');
                     $('#balance-currency-label').text('LTC');
                     $('#conversion-label').text('USD');
-                    $('#conversion-value').text(<?=number_format($balance, 2)?>);
+                    $('#conversion-value').text('<?=number_format($usdBalance, 2)?>');
 
                 } else if (currency == 'ETH-BTC') {
 
                     $('#coin-label').text('Ethereum');
-                    $('#balance-value').text(<?=number_format($ethBalance, 8)?>);
+                    $('#balance-value').text('<?=number_format($ethBalance, 8)?>');
                     $('#balance-currency-label').text('ETH');
                     $('#conversion-label').text('BTC');
-                    $('#conversion-value').text(<?=number_format($btcBalance, 8)?>);
+                    $('#conversion-value').text('<?=number_format($btcBalance, 8)?>');
 
                 } else if (currency == 'LTC-BTC') {
 
                     $('#coin-label').text('Litecoin');
-                    $('#balance-value').text(<?=number_format($ltcBalance, 8)?>);
+                    $('#balance-value').text('<?=number_format($ltcBalance, 8)?>');
                     $('#balance-currency-label').text('LTC');
                     $('#conversion-label').text('BTC');
-                    $('#conversion-value').text(<?=number_format($btcBalance, 8)?>);
+                    $('#conversion-value').text('<?=number_format($btcBalance, 8)?>');
 
                 }
                 $('#coin').val(currency);
             }
         }
     
-        function changeOrderType(newType) {
-            if (type != newType) {
+        function changeOrderType(newType, init = false) {
+            if (type != newType || init) {
                 type = newType;
                 $('.order-type-item').removeClass('active');
                 if (type == 'MARKET') {
@@ -576,7 +576,7 @@
                     changeBuySell('buy');
                 }
                 if (currency == 'BTC-USD' || currency == 'ETH-USD' || currency == 'LTC-USD') {
-                    $('#amount').val(parseFloat(<?=$balance?>).toFixed(2));
+                    $('#amount').val(parseFloat(<?=$usdBalance?>).toFixed(2));
                 } else if (currency == 'ETH-BTC' || currency == 'LTC-BTC') {
                     $('#amount').val(parseFloat(<?=$btcBalance?>).toFixed(8));
                 }

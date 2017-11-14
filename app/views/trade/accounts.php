@@ -1,26 +1,3 @@
-<?php
-
-    use ChrisEsser\GDAXExchange;
-
-    $exchange = new GDAXExchange\Exchange();
-
-    $exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
-    $accounts = $exchange->accounts();
-    $cbAccounts = $exchange->coinbase_accounts();
-
-    $btcUsd = $exchange->ticker('BTC-USD');
-    $btcUsd = $btcUsd['price'];
-    $ethUsd = $exchange->ticker('ETH-USD');
-    $ethUsd = $ethUsd['price'];
-    $ltcUsd = $exchange->ticker('LTC-USD');
-    $ltcUsd = $ltcUsd['price'];
-
-?>
-
-<div class="small-top-bar">Accounts</div>
-<div class="top-gap-fix"></div>
-
-
 <div class="container">
 
     <h4 class="account-type-header">GDAX Accounts</h4>
@@ -55,7 +32,7 @@
                 </div>
                 <div class="accounts-right">
                     <div>
-                        <?=number_format($account['balance'])?><br />
+                        <?=($account['currency'] == 'USD') ? '$' : ''?><?=number_format($account['balance'])?><br />
                         <?php if ($account['currency'] != 'USD') { ?>
                             $<?=number_format($account['balance'] * $dollarValue, 2)?>
                         <?php } ?>
@@ -102,7 +79,7 @@
                 </div>
                 <div class="accounts-right">
                     <div>
-                        <?=number_format($account['balance'])?><br />
+                        <?=($account['currency'] == 'USD') ? '$' : ''?><?=number_format($account['balance'])?><br />
                         <?php if ($account['currency'] != 'USD') { ?>
                             $<?=number_format($account['balance'] * $dollarValue, 2)?>
                         <?php } ?>

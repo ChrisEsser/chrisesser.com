@@ -1,0 +1,1 @@
+<div class="container"><?=HTML::displaySiteErrors()?></div>
