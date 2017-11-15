@@ -1,6 +1,6 @@
 <?php
 
-class BaseModel extends DB
+class BaseModel extends DataObject
 {
     protected $_model;
 
@@ -8,7 +8,7 @@ class BaseModel extends DB
     {
         global $inflect;
 
-        $this->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $this->connect(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASSWORD'), getenv('DB_NAME'));
 
         $this->_limit = PAGINATE_LIMIT;
         $this->_model = get_class($this);
@@ -17,8 +17,4 @@ class BaseModel extends DB
         if (!isset($this->abstract)) $this->_describe();
     }
 
-    function __destruct()
-    {
-        // TODO: Implement __destruct() method.
-    }
 }

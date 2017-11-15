@@ -2,7 +2,7 @@
 
 class User extends BaseModel
 {
-    var $hasMany = [
+    var $hasOne = [
         'Api' => 'Api',
     ];
 
