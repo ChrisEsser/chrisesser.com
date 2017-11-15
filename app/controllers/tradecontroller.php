@@ -36,17 +36,24 @@ class TradeController extends BaseController
         if (!$loggedInUser) Redirect::to(BASE_PATH . '/login');
         $this->loggedInUser = $loggedInUser;
 
+
         // check for this use's api keys
-        if (!$keys = $this->getUserApiKeys($this->loggedInUser['id'])) {
-            Redirect::to(BASE_PATH . '/trade/settings');
+        if ($this->_action != 'settings' && $this->_action != 'settings_save') {
+
+            if (!$keys = $this->getUserApiKeys($this->loggedInUser['id'])) {
+                Redirect::to(BASE_PATH . '/trade/settings');
+            }
+
+            // load the exchange api
+            $this->exchange = new GDAXExchange\Exchange();
+            $this->exchange->auth($keys['api_key'], $keys['secret'], $keys['phrase']);
+
         }
 
-        // load the exchange api
-        $this->exchange = new GDAXExchange\Exchange();
-        $this->exchange->auth($keys['api_key'], $keys['secret'], $keys['phrase']);
 
         // initialize balances
         $this->usdBalance = $this->btcBalance = $this->ethBalance = $this->ltcBalance = 0;
+
 
         // set view variables
         $this->set('page', strtolower($this->_action));
@@ -122,7 +129,7 @@ class TradeController extends BaseController
 
     /**
      * alerts page
-     * TODO: may chage this to a a charts page
+     * TODO: may change this to a charts page
      */
     public function alerts()
     {
@@ -144,6 +151,7 @@ class TradeController extends BaseController
      */
     public function settings_save()
     {
+        $this->render = 0;
 
         $missing = [];
 
@@ -162,7 +170,11 @@ class TradeController extends BaseController
 
         if (!empty($api)) {
             $id = $api[0]['api']['id'];
-            $api = new Api();
+        }
+
+        $api = new Api();
+
+        if (!empty($api)) {
             $api->id = $id;
         }
 
