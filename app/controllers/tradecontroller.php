@@ -260,17 +260,19 @@ class TradeController extends BaseController
         if (empty($this->accounts)) return false;
 
 
-        // gdax balances
+        // GDAX balances
         if ($type == 'gdax' || $type == 'all') {
             foreach ($this->accounts as $account) {
-                if ( $account['currency'] == 'USD' && ($currency == 'usd' || $currency == 'all') ) {
-                    $this->usdBalance = $account['balance'];
-                } else if ( $account['currency'] == 'BTC' && ($currency == 'btc' || $currency == 'all') ) {
-                    $this->btcBalance = $account['balance'];
-                } else if ( $account['currency'] == 'ETH' && ($currency == 'eth' || $currency == 'all') ) {
-                    $this->ethBalance = $account['balance'];
-                } else if ( $account['currency'] == 'LTC' && ($currency == 'ltc' || $currency == 'all')) {
-                    $this->ltcBalance = $account['balance'];
+                if (!empty($account['currency'])) {
+                    if ($account['currency'] == 'USD' && ($currency == 'usd' || $currency == 'all') ) {
+                        $this->usdBalance = $account['balance'];
+                    } else if ( $account['currency'] == 'BTC' && ($currency == 'btc' || $currency == 'all') ) {
+                        $this->btcBalance = $account['balance'];
+                    } else if ( $account['currency'] == 'ETH' && ($currency == 'eth' || $currency == 'all') ) {
+                        $this->ethBalance = $account['balance'];
+                    } else if ( $account['currency'] == 'LTC' && ($currency == 'ltc' || $currency == 'all')) {
+                        $this->ltcBalance = $account['balance'];
+                    }
                 }
             }
         }

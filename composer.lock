@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ChrisEsser/gdaxexchange.git",
-                "reference": "bb7a81ecc7b01a8d2bb58d60898ad120e943e431"
+                "reference": "b05684ea9963f761bce1fe02be3f904d8904bf00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ChrisEsser/gdaxexchange/zipball/bb7a81ecc7b01a8d2bb58d60898ad120e943e431",
-                "reference": "bb7a81ecc7b01a8d2bb58d60898ad120e943e431",
+                "url": "https://api.github.com/repos/ChrisEsser/gdaxexchange/zipball/b05684ea9963f761bce1fe02be3f904d8904bf00",
+                "reference": "b05684ea9963f761bce1fe02be3f904d8904bf00",
                 "shasum": ""
             },
             "type": "library",
@@ -31,7 +31,7 @@
                 "mit"
             ],
             "description": "GDAX Exchange API Class",
-            "time": "2017-11-11T01:21:45+00:00"
+            "time": "2017-11-14T18:40:48+00:00"
         },
         {
             "name": "davedevelopment/phpmig",
