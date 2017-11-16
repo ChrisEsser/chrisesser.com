@@ -142,7 +142,6 @@ class TradeController extends BaseController
     public function settings()
     {
         $keys = $this->getUserApiKeys($this->loggedInUser['id']);
-
         $this->set('keys', $keys);
     }
 

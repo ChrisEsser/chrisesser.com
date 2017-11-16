@@ -428,9 +428,9 @@ class DB
 
         }
 
-        foreach ($this->_describe as $field) {
-            $this->$field = null;
-        }
+//        foreach ($this->_describe as $field) {
+//            $this->$field = null;
+//        }
     }
 
 
@@ -523,9 +523,9 @@ class DB
     /** Clear All Variables **/
     function clear()
     {
-        foreach ($this->_describe as $field) {
-            $this->$field = null;
-        }
+//        foreach ($this->_describe as $field) {
+//            $this->$field = null;
+//        }
 
         $this->_orderby = null;
         $this->_extraConditions = null;

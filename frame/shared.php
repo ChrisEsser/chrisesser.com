@@ -281,16 +281,6 @@ function resolveUploadPath($hash, $type)
 /** Main Call Function **/
 function hook()
 {
-
-    echo '<pre>';
-    $user = new User();
-    $user->where('username', 'esser32@gmail.com');
-    $user->showHasOne();
-    $results = $user->search();
-
-    var_dump($results);
-    die;
-
     // load the router
     $router = new Router();
     $router->setBasePath(BASE_PATH);

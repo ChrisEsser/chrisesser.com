@@ -113,19 +113,23 @@ class DataObject
         $return = [];
         if (count($results)) {
 
+            $i = 0;
+
             foreach ($results as $row) {
 
                 foreach ($this->_describe as $column) {
-                    $return[$this->_table][$column] = $row[$column];
+                    $return[$i][$this->_table][$column] = $row[$column];
                 }
 
                 foreach ($this->hasOne as $alias => $model) {
                     $table = strtolower($inflect->pluralize($model));
                     $thisDescribe = $cache->get('describe' . $table);
                     foreach ($thisDescribe as $column) {
-                        $return[$table][$column] = $row[$column];
+                        $return[$i][$table][$column] = $row[$column];
                     }
                 }
+
+                $i++;
             }
 
         }

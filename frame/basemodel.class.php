@@ -1,6 +1,6 @@
 <?php
 
-class BaseModel extends DataObject
+class BaseModel extends DB
 {
     protected $_model;
 
