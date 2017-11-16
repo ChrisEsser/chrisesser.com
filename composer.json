@@ -3,6 +3,7 @@
         "vlucas/phpdotenv": "^2.4",
         "chrisesser/gdaxexchange": "@dev",
         "davedevelopment/phpmig": "^1.4",
-        "pimple/pimple": "~3.0"
+        "pimple/pimple": "~3.0",
+        "picorm/picorm": "^0.0.7"
     }
 }

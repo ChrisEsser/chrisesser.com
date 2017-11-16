@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6af6d87b50fa2ddf79d980b6235387e8",
+    "content-hash": "b95f087dbec9f1b8613f13ed943e2776",
     "packages": [
         {
             "name": "chrisesser/gdaxexchange",
@@ -95,6 +95,47 @@
                 "migrations"
             ],
             "time": "2017-09-06T15:42:49+00:00"
+        },
+        {
+            "name": "picorm/picorm",
+            "version": "0.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iNem0o/PicORM.git",
+                "reference": "684a37e9ccbf29314e62e0314105d130c561521d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iNem0o/PicORM/zipball/684a37e9ccbf29314e62e0314105d130c561521d",
+                "reference": "684a37e9ccbf29314e62e0314105d130c561521d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PicORM": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "inem0o",
+                    "email": "contact@inem0o.fr",
+                    "homepage": "https://github.com/iNem0o"
+                }
+            ],
+            "description": "Lightweight ORM",
+            "homepage": "https://github.com/iNem0o/PicORM",
+            "keywords": [
+                "orm"
+            ],
+            "time": "2015-10-31T09:37:00+00:00"
         },
         {
             "name": "pimple/pimple",
