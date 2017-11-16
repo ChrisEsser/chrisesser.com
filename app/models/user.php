@@ -13,7 +13,7 @@ class User extends BaseModel
 
     protected static function defineRelations()
     {
-        self::addRelationOneToMany('id', 'Api', 'user_id');
+        self::addRelationOneToOne('id', 'Api', 'user_id');
     }
 
     public $id;

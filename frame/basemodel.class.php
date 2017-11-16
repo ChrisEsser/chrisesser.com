@@ -6,6 +6,7 @@ class BaseModel extends PicORM\Model
 
     protected static $_tableName;
     protected static $_primaryKey;
+    protected static $_relations = [];
 
     function __construct()
     {

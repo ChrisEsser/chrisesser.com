@@ -36,17 +36,24 @@ class TradeController extends BaseController
         if (!$loggedInUser) Redirect::to(BASE_PATH . '/login');
         $this->loggedInUser = $loggedInUser;
 
+        $keys = [];
 
-        // check for this use's api keys
+
+        // check for this user's api keys
+        $keys = Api::findOne(['user_id' => $this->loggedInUser['id']]);
+
+
+        // setup the exchange object if we are not on the settings page
         if ($this->_action != 'settings' && $this->_action != 'settings_save') {
 
-            if (!$keys = $this->getUserApiKeys($this->loggedInUser['id'])) {
+            if (empty($keys)) {
+                addSiteError('No GDAX API key configured yet.');
                 Redirect::to(BASE_PATH . '/trade/settings');
             }
 
             // load the exchange api
             $this->exchange = new GDAXExchange\Exchange();
-            $this->exchange->auth($keys['api_key'], $keys['secret'], $keys['phrase']);
+            $this->exchange->auth($keys->api_key, $keys->secret, $keys->phrase);
 
         }
 
@@ -57,6 +64,7 @@ class TradeController extends BaseController
 
         // set view variables
         $this->set('page', strtolower($this->_action));
+        $this->set('keys', $keys);
 
     }
 
@@ -141,8 +149,7 @@ class TradeController extends BaseController
      */
     public function settings()
     {
-        $keys = $this->getUserApiKeys($this->loggedInUser['id']);
-        $this->set('keys', $keys);
+
     }
 
     /**
@@ -201,18 +208,8 @@ class TradeController extends BaseController
     {
         if (empty($userId)) return false;
 
-        // get the logged in user
-        $user = new User();
-        $user->id = $userId;
-        $user->showHasMany();
-        $user = $user->search();
+        return  User::findOne(['id' => $userId])->getApi();
 
-        // check for api keys
-        if (!empty($user['apis'][0])) {
-            return $user['apis'][0];
-        }
-
-        return false;
     }
 
     /**

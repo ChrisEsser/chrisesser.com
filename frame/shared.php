@@ -281,14 +281,18 @@ function resolveUploadPath($hash, $type)
 /** Main Call Function **/
 function hook()
 {
-    $user = User::findOne(['username' => 'esser32@gmail.com']);
-    $api = Api::findOne(['user_id' => $user->id]);
 
-
-    echo '<pre>';
-    var_dump($user);
-    var_dump($api);
-    die;
+//    echo '<pre>';
+//    $user = User::findOne(['username' => 'esser32@gmail.com']);
+//    $api = $user->getApi();
+//
+////    $user->getApis();
+////    $api = Api::findOne(['user_id' => $user->id]);
+//
+//
+//    var_dump($user);
+//    var_dump($api);
+//    die;
 
     // load the router
     $router = new Router();
