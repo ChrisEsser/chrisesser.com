@@ -87,6 +87,9 @@
     }
 
     @media (max-width: 1100px) {
+        #hide-left {
+            display: none;
+        }
         .paper {
             display: block;
         }
@@ -178,6 +181,13 @@
                         </table>
 
                     </div>
+
+                    <div id="hide-left">
+
+                        <h3>Skills</h3>
+
+                    </div>
+
 
                 </div>
 
