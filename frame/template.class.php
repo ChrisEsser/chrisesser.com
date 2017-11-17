@@ -43,7 +43,7 @@ class Template
             include($viewsRoot . 'index.header.php');
         }
 
-//        var_dump($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
+        var_dump($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
         clearstatcache();
 
         // check for a view file matching the action
@@ -63,8 +63,8 @@ class Template
             }
 
         } else {
+            echo '404';
             http_response_code(404);
-            exit;
         }
 
         // site default footer
