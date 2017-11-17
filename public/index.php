@@ -6,8 +6,6 @@ session_start();
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)));
 
-var_dump(ROOT);
-
 // add autoloader for composer
 require ROOT . DS . 'vendor' . DS . 'autoload.php';
 
