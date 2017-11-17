@@ -281,6 +281,9 @@ function resolveUploadPath($hash, $type)
 function hook()
 {
 
+    echo 'TEST';
+    die;
+
     // load the router
     $router = new Router();
     $router->setBasePath(BASE_PATH);
