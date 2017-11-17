@@ -43,9 +43,6 @@ class Template
             include($viewsRoot . 'index.header.php');
         }
 
-        
-        var_dump($viewsRoot . $this->_controller . DS . $this->_action . '.php');
-
         // check for a view file matching the action
         if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
 

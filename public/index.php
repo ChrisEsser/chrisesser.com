@@ -4,7 +4,7 @@ session_start();
 
 // some constants
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)));
+define('ROOT', dirname(__FILE__));
 
 // add autoloader for composer
 require ROOT . DS . 'vendor' . DS . 'autoload.php';
