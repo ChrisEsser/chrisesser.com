@@ -43,6 +43,8 @@ class Template
             include($viewsRoot . 'index.header.php');
         }
 
+        echo 'testtemplate';
+
 
         // check for a view file matching the action
         if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
