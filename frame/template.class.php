@@ -43,22 +43,22 @@ class Template
             include($viewsRoot . 'index.header.php');
         }
 
-        var_dump($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
-        clearstatcache();
+        $_controller = strtolower($this->_controller);
+        $_action = strtolower($this->_action);
 
         // check for a view file matching the action
-        if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
+        if (file_exists($viewsRoot . $_controller . DS . $_action  . '.php')) {
 
             // controller global header
-            if (file_exists($viewsRoot . $this->_controller . DS . 'header'  . '.php')) {
-                include($viewsRoot . $this->_controller . DS . 'header'  . '.php');
+            if (file_exists($viewsRoot . $_controller . DS . 'header'  . '.php')) {
+                include($viewsRoot . $_controller . DS . 'header'  . '.php');
             }
 
             // display this action's view
-            include($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
+            include($viewsRoot . $_controller . DS . $_action  . '.php');
 
             // controller global footer
-            if (file_exists($viewsRoot . $this->_controller . DS . 'footer'  . '.php')) {
+            if (file_exists($viewsRoot . $_controller . DS . 'footer'  . '.php')) {
                 include($viewsRoot . $this->_controller . DS . 'footer'  . '.php');
             }
 
