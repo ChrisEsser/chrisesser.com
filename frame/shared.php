@@ -296,9 +296,6 @@ function hook()
     $method = $_SERVER['REQUEST_METHOD'];
     $match = $router->match($request, $method);
 
-    var_dump($match);
-    die;
-
     try {
 
         if ($match === false) {
