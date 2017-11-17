@@ -59,7 +59,7 @@ class Template
 
             // controller global footer
             if (file_exists($viewsRoot . $_controller . DS . 'footer'  . '.php')) {
-                include($viewsRoot . $this->_controller . DS . 'footer'  . '.php');
+                include($viewsRoot . $_controller . DS . 'footer'  . '.php');
             }
 
         } else {
