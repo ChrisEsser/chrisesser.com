@@ -6,8 +6,10 @@ session_start();
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)));
 
-// load the environment variables from the main .env file
+// add autoloader for composer
 require ROOT . DS . 'vendor' . DS . 'autoload.php';
+
+// load the environment variables from the main .env file
 $dotenv = new Dotenv\Dotenv(ROOT);
 $dotenv->load();
 
