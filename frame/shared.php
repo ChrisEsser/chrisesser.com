@@ -281,9 +281,6 @@ function resolveUploadPath($hash, $type)
 function hook()
 {
 
-    echo 'TEST';
-    die;
-
     // load the router
     $router = new Router();
     $router->setBasePath(BASE_PATH);
@@ -298,6 +295,9 @@ function hook()
 
     $method = $_SERVER['REQUEST_METHOD'];
     $match = $router->match($request, $method);
+
+    var_dump($match);
+    die;
 
     try {
 
