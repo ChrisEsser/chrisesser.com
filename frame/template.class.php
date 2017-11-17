@@ -43,30 +43,32 @@ class Template
             include($viewsRoot . 'index.header.php');
         }
 
-        var_dump($this->_controller);
-        var_dump($this->_action);
+        try {
 
-        // check for a view file matching the action
-        if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
+            // check for a view file matching the action
+            if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
 
-            // controller global header
-            if (file_exists($viewsRoot . $this->_controller . DS . 'header'  . '.php')) {
-                include($viewsRoot . $this->_controller . DS . 'header'  . '.php');
+                // controller global header
+                if (file_exists($viewsRoot . $this->_controller . DS . 'header'  . '.php')) {
+                    include($viewsRoot . $this->_controller . DS . 'header'  . '.php');
+                }
+
+                // display this action's view
+                include($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
+
+                // controller global footer
+                if (file_exists($viewsRoot . $this->_controller . DS . 'footer'  . '.php')) {
+                    include($viewsRoot . $this->_controller . DS . 'footer'  . '.php');
+                }
+
+            } else {
+                http_response_code(404);
+                exit;
             }
 
-            // display this action's view
-            include($viewsRoot . $this->_controller . DS . $this->_action  . '.php');
-
-            // controller global footer
-            if (file_exists($viewsRoot . $this->_controller . DS . 'footer'  . '.php')) {
-                include($viewsRoot . $this->_controller . DS . 'footer'  . '.php');
-            }
-
-        } else {
-            http_response_code(404);
-            exit;
+        } catch (Exception $e) {
+            echo $e;
         }
-
 
         // site default footer
         if ($renderHeader == 1 && file_exists($viewsRoot . 'index.footer.php')) {
