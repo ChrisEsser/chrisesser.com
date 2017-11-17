@@ -2,8 +2,27 @@
     body {
         font-size: 16px;
     }
+
+    .home-link {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        height: 50px;
+        width: 50px;
+        border-radius: 25px;
+        text-align: center;
+        line-height: 50px;
+        background-color: #404040;
+        color: #fff;
+        vertical-align: middle;
+        -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    }
+
     .paper {
         margin-top: 50px;
+        margin-bottom: 50px;
         border-radius: 2px;
         -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
         -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
@@ -19,7 +38,7 @@
     }
     .paper-right-col {
         flex: 7;
-        padding: 20px;
+        padding: 20px 40px;
     }
 
     .pic-container {
@@ -80,15 +99,29 @@
         font-size: 1em;
     }
 
+    .show-more-trigger {
+        display: none;
+        flex-basis: 100%;
+        font-size: .8em;
+        margin-bottom: -13px;
+        text-align: right;
+    }
+
     @media (max-width: 767px) {
-        .paper-left-col > div:last-child {
+        .paper-left-col > div:nth-child(3) {
             flex-basis: 100%;
         }
     }
 
     @media (max-width: 1100px) {
+
+        .show-more-trigger {
+            display: block;
+        }
+
         #hide-left {
             display: none;
+            flex-basis: 100%;
         }
         .paper {
             display: block;
@@ -106,7 +139,7 @@
         .paper-left-col > div:nth-child(2) {
             flex: 2;
         }
-        .paper-left-col > div:last-child {
+        .paper-left-col > div:nth-child(3) {
             flex: 2;
         }
         .pic-container {
@@ -138,6 +171,10 @@
 
 <div class="container">
 
+        <div class="home-link" style="">
+            <a href="<?=BASE_PATH?>" style="color: #fff"><i class="fa fa-home fa-2x" style="margin-top: 8px"></i></a>
+        </div>
+
         <div class="paper">
 
 
@@ -165,7 +202,6 @@
 
                 </div>
 
-                <div class="clearfix"></div>
 
                 <div class="left-section-container">
 
@@ -173,22 +209,40 @@
 
                         <table class="table" style="border: none; margin-bottom: 0">
                             <tbody>
-                            <tr>
-                                <td><a href="https://github.com/chrisesser" target="_blank"><i class="fa fa-github"></i> Github</a></td>
-                                <td><a href="https://www.linkedin.com/in/christopher-esser-316113b4/" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></td>
-                            </tr>
+                                <tr>
+                                    <td><a href="https://github.com/chrisesser" target="_blank"><i class="fa fa-github"></i> Github</a></td>
+                                    <td><a href="https://www.linkedin.com/in/christopher-esser-316113b4/" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></td>
+                                </tr>
                             </tbody>
                         </table>
 
                     </div>
 
-                    <div id="hide-left">
+                </div>
 
-                        <h3>Skills</h3>
+                <div id="hide-left">
 
-                    </div>
+                    <h3>Skills</h3>
+
+                    <h4 style="font-size: 1.1em; text-decoration: underline">Backend Development</h4>
+                    <p>PHP 5.3+, PHPUnit, AWS, Composer, xDebug, Performance, SOAP/Resful API, Design Patterns, Laravel, MVC</p>
+
+                    <h4 style="font-size: 1.1em; text-decoration: underline">Frontend Development</h4>
+                    <p>HTML5, CSS3, Javascript, JQuery, React, Ajax, JSON, Bootstrap, Responsive Design, UI/UX</p>
+
+                    <h4 style="font-size: 1.1em; text-decoration: underline">Databases</h4>
+                    <p>MySQL, SQL Server, SQLite, PostgreSQL, MongoDB</p>
 
 
+                    <h3>Personal Details</h3>
+
+                    <p>DOB: 10/19/1982<br />
+                        Hometown: Lancaster, WI</p>
+
+                </div>
+
+                <div id="show-more-trigger" class="show-more-trigger pull-right">
+                    Show More <i class="fa fa-chevron-down"></i>
                 </div>
 
 
@@ -259,9 +313,28 @@
                     </tr>
                 </table>
 
+                <h3>Education</h3>
+
+                <p>Southwest Wisconsin Technical College - Associate of Science - 2015</p>
+
             </div>
 
 
         </div>
 
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#show-more-trigger').click(function() {
+            if ($('#hide-left').is(":visible")) {
+                $('#hide-left').slideUp(300);
+                $(this).html('Show More <i class="fa fa-chevron-down"></i>');
+            }
+            else {
+                $('#hide-left').slideDown(300);
+                $(this).html('Show Less <i class="fa fa-chevron-up"></i>');
+            }
+        });
+    });
+</script>

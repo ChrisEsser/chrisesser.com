@@ -15,29 +15,28 @@ class LoginController extends BaseController
 
     public function auth()
     {
+
         $this->render = 0;
 
-        $user = new User();
-        $user->where('username', $_POST['email']);
-        $user->setLimit(1);
-        $user = $user->search();
-
-        if (empty($user)) {
+        // check for a user with this usermname
+        if (!$user = User::findOne(['username' => $_POST['email']])) {
             addSiteError('That email does not exist');
             Redirect::back();
-
         }
 
-        if (!password_verify($_POST['password'], $user[0]['user']['password'])) {
+
+        // verify the password
+        if (!password_verify($_POST['password'], $user->password)) {
             addSiteError('Invalid password');
             Redirect::back();
         }
 
-
+        // set the logged in user
         $_SESSION['frame']['auth']['loggedInUser'] = [
-            'id' => $user[0]['user']['id'],
-            'username' => $user[0]['user']['username'],
+            'id' => $user->id,
+            'username' => $user->username,
         ];
+
         Redirect::backTwo();
 
     }

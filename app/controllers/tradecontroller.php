@@ -170,29 +170,26 @@ class TradeController extends BaseController
             Redirect::back();
         }
 
-        $api = new Api();
-        $api->where('user_id', $this->loggedInUser['id']);
-        $api = $api->search();
 
-        if (!empty($api)) {
-            $id = $api[0]['api']['id'];
+        // check for an existing record
+        if (!$api = Api::findOne(['user_id' => $this->loggedInUser['id']])) {
+            $api = new Api();
+            $api->user_id = $this->loggedInUser['id'];
         }
 
-        $api = new Api();
-
-        if (!empty($api)) {
-            $api->id = $id;
-        }
-
-        $api->user_id = $this->loggedInUser['id'];
+        // set the values
         $api->api_key = $_POST['api_key'];
         $api->secret = $_POST['secret'];
         $api->phrase = $_POST['phrase'];
 
-        if (!$api->save()) {
+
+        try {
+            $api->save();
+        } catch (Exception $e) {
             addSiteError('There was an error saving the API settings.');
             Redirect::back();
         }
+
 
         Redirect::backTwo();
 
