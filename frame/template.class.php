@@ -44,11 +44,10 @@ class Template
         }
 
         var_dump($this->_controller);
+        var_dump($this->_action);
 
         // check for a view file matching the action
         if (file_exists($viewsRoot . $this->_controller . DS . $this->_action  . '.php')) {
-
-            echo 'WTF';
 
             // controller global header
             if (file_exists($viewsRoot . $this->_controller . DS . 'header'  . '.php')) {
