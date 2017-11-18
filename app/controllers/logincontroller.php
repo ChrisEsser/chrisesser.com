@@ -43,6 +43,8 @@ class LoginController extends BaseController
 
     public function logout()
     {
+        $this->render = 0;
+
         Auth::logoutProcess();
         Redirect::to(BASE_PATH);
     }
