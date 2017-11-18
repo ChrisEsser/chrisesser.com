@@ -84,7 +84,7 @@ class UserController extends BaseController
         }
 
         $user->username = $_POST['username'];
-        $user->admin = ($this->isAdmin && !empty($_POST['admin'])) ? 1 : 0;
+        $user->admin = ($this->isAdmin && !empty($_POST['admin'])) ? true : false;
 
         try {
             $user->save();
