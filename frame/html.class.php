@@ -58,7 +58,7 @@ class HTML
      */
     public static function includeJs($file)
     {
-        return '<script src="' . BASE_PATH . '/public/js/' . $file . '.js"></script>';
+        return '<script src="' . BASE_PATH . '/js/' . $file . '.js"></script>';
     }
 
     /**
@@ -67,7 +67,7 @@ class HTML
      */
     public static function includeCss($file)
     {
-        return '<link rel="stylesheet" href="' . BASE_PATH . '/public/css/' . $file . '.css">';
+        return '<link rel="stylesheet" href="' . BASE_PATH . '/css/' . $file . '.css">';
     }
 
 
