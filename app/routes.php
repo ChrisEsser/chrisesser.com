@@ -21,7 +21,7 @@ $router->addRoutes([
 
     ['GET', '/login', 'LoginController#login'],
     ['POST', '/auth/login', 'LoginController#auth'],
-    ['POST', '/auth/logout', 'LoginController#logout'],
+    ['GET', '/auth/logout', 'LoginController#logout'],
 
     ['GET', '/resume', 'ResumeController#resume'],
     ['GET', '/portfolio', 'PortfolioController#portfolio'],
