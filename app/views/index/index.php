@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?=BASE_PATH?>/public/css/home.css">
+<link rel="stylesheet" href="<?=BASE_PATH?>/css/home.css">
 
 <div class="container">
 
