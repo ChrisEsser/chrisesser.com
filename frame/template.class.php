@@ -37,17 +37,18 @@ class Template
         extract($this->variables);
         $viewsRoot = ROOT . DS . 'app' . DS . 'views' . DS;
 
-
-        // site default header
-        if ($renderHeader == 1 && file_exists($viewsRoot . 'index.header.php')) {
-            include($viewsRoot . 'index.header.php');
-        }
-
         $_controller = strtolower($this->_controller);
         $_action = strtolower($this->_action);
 
+
         // check for a view file matching the action
         if (file_exists($viewsRoot . $_controller . DS . $_action  . '.php')) {
+
+            // site default header
+            if ($renderHeader == 1 && file_exists($viewsRoot . 'index.header.php')) {
+                include($viewsRoot . 'index.header.php');
+            }
+
 
             // controller global header
             if (file_exists($viewsRoot . $_controller . DS . 'header'  . '.php')) {
@@ -63,8 +64,8 @@ class Template
             }
 
         } else {
-            echo '404';
             http_response_code(404);
+            exit();
         }
 
         // site default footer

@@ -9,6 +9,7 @@ class User extends BaseModel
     protected static $_tableFields = [
         'username',
         'password',
+        'admin',
     ];
 
     protected static function defineRelations()
@@ -19,5 +20,6 @@ class User extends BaseModel
     public $id;
     public $username;
     public $password;
+    public $admin;
 
 }
