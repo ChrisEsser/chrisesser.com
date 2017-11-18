@@ -74,6 +74,8 @@ class TradeController extends BaseController
      */
     public function prices()
     {
+        echo 'Progress';
+
         if (!$this->getAccounts('gdax')) {
             addSiteError($this->accounts['body']);
             Redirect::to(BASE_PATH . '/trade/settings');
