@@ -128,6 +128,7 @@
         }
         .paper-right-col {
             display: block;
+            padding: 20px 15px;
         }
         .paper-left-col {
             display: flex;
