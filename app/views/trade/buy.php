@@ -248,6 +248,7 @@
                 $('#post_only').attr('checked', true);
                 $('#post_only').removeAttr('disabled');
             }
+            $('#order-book-snapshot-price').text(lastMatch[currency]);
         }
     
         function changeBuySell (newSide, init = false) {
@@ -598,8 +599,8 @@
             var decimals = ($('#total-label').text() == 'USD') ? 2 : 8;
 
             if (type == 'MARKET') {
-                if (side == 'buy') amount = $('#amount').val() / lastMatch[ currency ];
-                else if (side == 'sell') amount = $('#amount').val() * lastMatch[ currency ];
+                if (side == 'buy') amount = $('#amount').val() / lastMatch[currency];
+                else if (side == 'sell') amount = $('#amount').val() * lastMatch[currency];
             } else if (type == 'LIMIT') {
                 amount = $('#amount').val() * $('#price').val();
             }
@@ -626,11 +627,14 @@
 
             var msg = JSON.parse(event.data);
 
-            if (msg.product_id && msg.product_id == currency) {
+            if (msg.product_id) {
 
-                    lastMatch[ currency ] = parseFloat(msg.price);
+                lastMatch[msg.product_id] = parseFloat(msg.price);
+
+                if (msg.product_id == currency) {
                     var decimals = ($('#conversion-label').text() == 'USD') ? 2 : 8;
                     $('#order-book-snapshot-price').text(parseFloat(msg.price).toFixed(decimals));
+                }
             }
         };
 

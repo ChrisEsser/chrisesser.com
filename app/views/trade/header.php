@@ -9,6 +9,7 @@
     }
 ?>
 
+
 <div class="small-top-bar">
     <?=$headerText?>
     <span id="order-label"></span>&nbsp;<span id="coin-label"></span>
