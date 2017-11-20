@@ -17,11 +17,11 @@
             <span id="reauth-email" class="reauth-email"></span>
             <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-<!--            <div id="remember" class="checkbox">-->
-<!--                <label>-->
-<!--                    <input type="checkbox" value="1" id="remember" name="remember"> Remember me-->
-<!--                </label>-->
-<!--            </div>-->
+            <div id="remember" class="checkbox">
+                <label>
+                    <input type="checkbox" value="1" id="remember" name="remember"> Remember me
+                </label>
+            </div>
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" role="button">Sign in</button>
         </form>
 <!--        <a href="#" class="forgot-password">-->
