@@ -57,7 +57,9 @@ class LoginController extends BaseController
             try {
                 $authToken->save();
                 setcookie('login', $selector, time()+31556926, '/');
-            } catch(Exception $e){}
+            } catch(Exception $e){
+                addSiteError($e);
+            }
         }
 
         Redirect::backTwo();
