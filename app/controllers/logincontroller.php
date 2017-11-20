@@ -51,15 +51,14 @@ class LoginController extends BaseController
             $authToken->user_id = $user->id;
             $authToken->selector = $selector;
             $authToken->validator = $validator;
-            $authToken->expires = 'DATE_ADD(UTC_DATETIME, INTERVAL 1 YEAR)';
+//            $authToken->expires = 'DATE_ADD(UTC_DATETIME, INTERVAL 1 YEAR)';
 
             // try to save the token & cookie
             try {
                 $authToken->save();
                 setcookie('login', $selector, time()+31556926, '/');
             } catch(Exception $e){
-                var_dump($e);
-                die;
+                throw new Exception($e);
             }
         }
 
