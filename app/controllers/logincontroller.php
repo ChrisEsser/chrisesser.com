@@ -58,7 +58,8 @@ class LoginController extends BaseController
                 $authToken->save();
                 setcookie('login', $selector, time()+31556926, '/');
             } catch(Exception $e){
-                addSiteError($e);
+                var_dump($e);
+                die;
             }
         }
 
