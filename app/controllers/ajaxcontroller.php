@@ -9,29 +9,31 @@ class AjaxController extends BaseController
     protected $btcBalance;
     protected $ethBalance;
     protected $ltcBalance;
+    protected $testMode;
 
     public function beforeAction()
     {
         $this->render = 0;
         header('Content-Type: application/json');
 
-
-        $this->exchange = new ChrisEsser\GDAXExchange\Exchange();
-        $this->exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
-        $this->accounts = $this->exchange->accounts();
-
-        $this->usdBalance = $this->btcBalance = $this->ethBalance = $this->ltcBalance = 0;
-        foreach ($this->accounts as $account) {
-            if ($account['currency'] == 'USD') {
-                $this->usdBalance = $account['balance'];
-            } else if ($account['currency'] == 'BTC') {
-                $this->btcBalance = $account['balance'];
-            } else if ($account['currency'] == 'ETH') {
-                $this->ethBalance = $account['balance'];
-            } else if ($account['currency'] == 'LTC') {
-                $this->ltcBalance = $account['balance'];
-            }
-        }
+//        $this->testMode = getenv('DEVELOPMENT_ENVIRONMENT');
+//
+//        $this->exchange = new ChrisEsser\GDAXExchange\Exchange($this->testMode);
+//        $this->exchange->auth('3a6d08edddfc41f3907c4e3e56450542', '413ccRY5f3kxPdi7CkJbGapoMvG6NYVdnOfHXhM2flmth5o0k4L4v02PLlB7xBcjbdplCwozgf5w0Z3iePQ1qA==', 'nj3iw1bct');
+//        $this->accounts = $this->exchange->accounts();
+//
+//        $this->usdBalance = $this->btcBalance = $this->ethBalance = $this->ltcBalance = 0;
+//        foreach ($this->accounts as $account) {
+//            if ($account['currency'] == 'USD') {
+//                $this->usdBalance = $account['balance'];
+//            } else if ($account['currency'] == 'BTC') {
+//                $this->btcBalance = $account['balance'];
+//            } else if ($account['currency'] == 'ETH') {
+//                $this->ethBalance = $account['balance'];
+//            } else if ($account['currency'] == 'LTC') {
+//                $this->ltcBalance = $account['balance'];
+//            }
+//        }
     }
 
     public function buy()

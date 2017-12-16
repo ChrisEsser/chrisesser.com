@@ -23,6 +23,9 @@ class TradeController extends BaseController
     public $ethUsd;
     public $ltcUsd;
     public $cbAccounts;
+    public $otherAccounts;
+
+    protected $testMode;
 
 
     /**
@@ -31,20 +34,33 @@ class TradeController extends BaseController
     public function beforeAction()
     {
 
+        $this->testMode = getenv('DEVELOPMENT_ENVIRONMENT');
+        if ($this->testMode == 'true') $this->testMode = true;
+        else $this->testMode = false;
+
+
         // check for logged in user
         $loggedInUser = Auth::loggedInUser();
         if (!$loggedInUser) Redirect::to(BASE_PATH . '/login');
         $this->loggedInUser = $loggedInUser;
 
-        $keys = [];
+        $keys = new stdClass();
+        if ($this->testMode) {
+            // get test keys
+            $keys->api_key = getenv('TEST_KEY');
+            $keys->secret = getenv('TEST_SECRET');
+            $keys->phrase = getenv('TEST_PHRASE');
 
+        } else {
+            // check for this user's gdax api keys
+            $keys = Api::findOne(['user_id' => $this->loggedInUser['id']]);
+        }
 
-        // check for this user's api keys
-        $keys = Api::findOne(['user_id' => $this->loggedInUser['id']]);
+        // dont need to load gdax api on these actions
+        $noAPIActions = ['settings', 'settings_save', 'add_account', 'add_accounts'];
 
-
-        // setup the exchange object if we are not on the settings page
-        if ($this->_action != 'settings' && $this->_action != 'settings_save') {
+        // setup the gdax exchange object if we are not on the settings page
+        if (!in_array($this->_action, $noAPIActions)) {
 
             if (empty($keys)) {
                 addSiteError('No GDAX API key configured yet.');
@@ -52,7 +68,8 @@ class TradeController extends BaseController
             }
 
             // load the exchange api
-            $this->exchange = new GDAXExchange\Exchange();
+            $this->exchange = new GDAXExchange\Exchange($this->testMode);
+
             $this->exchange->auth($keys->api_key, $keys->secret, $keys->phrase);
 
         }
@@ -75,12 +92,12 @@ class TradeController extends BaseController
     public function prices()
     {
 
-        if (!$this->getAccounts('gdax')) {
+        if (!$this->getAccounts('all')) {
             addSiteError($this->accounts['body']);
             Redirect::to(BASE_PATH . '/trade/settings');
         }
 
-        $this->getBalance('all', 'gdax');
+        $this->getBalance('all', 'all');
 
         $this->set('accounts', $this->accounts);
         $this->set('usdBalance', $this->usdBalance);
@@ -96,14 +113,19 @@ class TradeController extends BaseController
     public function accounts()
     {
 
+        // gdax / coinbase accounts
         if (!$this->getAccounts('all')) {
             addSiteError($this->accounts['body']);
             Redirect::to(BASE_PATH . '/trade/settings');
         }
 
+        // check for manual accounts
+        $otherAccounts = Account::find(['user_id' => $this->loggedInUser['id']]);
+
         $this->getBalance('all', 'all');
 
         $this->set('accounts', $this->accounts);
+        $this->set('otherAccounts', $otherAccounts);
         $this->set('cbAccounts', $this->cbAccounts);
         $this->set('usdBalance', $this->usdBalance);
         $this->set('btcBalance', $this->btcBalance);
@@ -112,6 +134,32 @@ class TradeController extends BaseController
         $this->set('btcUsd', $this->exchange->ticker('BTC-USD')['price'] ?: 0);
         $this->set('ethUsd', $this->exchange->ticker('ETH-USD')['price'] ?: 0);
         $this->set('ltcUsd', $this->exchange->ticker('LTC-USD')['price'] ?: 0);
+
+    }
+
+    public function account($type, $currency)
+    {
+
+        $this->set('type', $type);
+        $this->set('currency', $currency);
+
+    }
+
+    public function remove_account()
+    {
+        $type = (!empty($_POST['type'])) ? $_POST['type'] : '';
+        $currency = (!empty($_POST['account'])) ? $_POST['account'] : '';
+
+        if ($account = Account::findOne([
+            'user_id' => $this->loggedInUser['id'],
+            'market_name' => $currency,
+            'type' => 'manual'
+        ])) {
+
+            $account->delete();
+        }
+
+        Redirect::to(BASE_PATH . '/trade/accounts');
 
     }
 
@@ -150,6 +198,78 @@ class TradeController extends BaseController
      */
     public function settings()
     {
+
+    }
+
+    /**
+     * add manual account page
+     */
+    public function add_accounts()
+    {
+
+        // get a list of available accounts from bitrex
+        $url = 'https://bittrex.com/api/v1.1/public/getmarkets';
+        $tmpMarkets = json_decode(file_get_contents($url));
+        $tmpMarkets = $tmpMarkets->result;
+
+
+        // find any markets already added
+        $checked = [];
+        foreach ($tmpMarkets as &$tmpMarket) {
+
+            if (!Account::findOne(['user_id' => $this->loggedInUser['id'], 'market_name' => $tmpMarket->MarketCurrency])
+                && $tmpMarket->MarketCurrency != 'USDT'
+                && !in_array($tmpMarket->MarketCurrency, $checked)) {
+
+                $checked[] = $tmpMarket->MarketCurrency;
+                $markets[] = $tmpMarket;
+
+            }
+        }
+
+
+        $this->set('markets', $markets);
+
+    }
+
+
+    public function add_account()
+    {
+
+        //  add an account via ajax
+        $this->render = 0;
+        header('Content-Type: application/json');
+
+        $market = (!empty($_POST['currency'])) ? $_POST['currency'] : '';
+        $balance = (!empty($_POST['balance'])) ? $_POST['balance'] : 0;
+
+        if (Account::findOne(['user_id' => $this->loggedInUser['id'], 'market_name' => $market])) {
+            echo json_encode(['result' => 'success', 'message' => 'Coin already added']);
+            die;
+        }
+
+        if (empty($market)) {
+            echo json_encode(['result' => 'error', 'message' => 'No currency was selected.']);
+            die;
+        }
+
+        // add the account
+        $account = new Account();
+        $account->user_id = $this->loggedInUser['id'];
+        $account->type = 'manual';
+        $account->market_name = $market;
+        $account->balance = $balance;
+
+        try {
+            $account->save();
+        } catch (Exception $e) {
+            echo json_encode(['result' => 'error', 'message' => 'There was an error saving adding the account']);
+            die;
+        }
+
+
+        echo json_encode(['result' => 'success', 'message' => 'Coin successfully added']);
+        die;
 
     }
 
@@ -228,6 +348,12 @@ class TradeController extends BaseController
             $this->cbAccounts = $this->exchange->coinbase_accounts();
         }
 
+        // coinbase accounts
+        if ($type == 'other' || $type == 'all') {
+//            $this->otherAccounts = $this->getOtherAccounts();
+        }
+
+
         // check response
         if (!empty($this->accounts['body']) && !empty($this->cbAccounts['body'])) {
             $this->accounts['body'] = str_replace('{"message":"', '', $this->accounts['body']);
@@ -286,6 +412,21 @@ class TradeController extends BaseController
             }
         }
 
+        // manual balances
+        if (!empty($this->cbAccounts) && ($type == 'other' || $type == 'all')) {
+            foreach (Account::find(['user_id' => $this->loggedInUser['id']]) as $account) {
+
+                if ($account->market_name == 'ETH') $name = 'ethereum';
+                elseif ($account->market_name == 'BTC') $name = 'bitcoin';
+                elseif ($account->market_name == 'LTC') $name = 'litecoin';
+                elseif ($account->market_name == 'XRP') $name = 'ripple';
+                elseif ($account->market_name == 'XLM') $name = 'stellar';
+                else break;
+
+                $result = json_decode(file_get_contents('https://api.coinmarketcap.com/v1/ticker/' . $name));
+                $this->usdBalance += $result[0]->price_usd * $account->balance;
+            }
+        }
 
         return true;
 
