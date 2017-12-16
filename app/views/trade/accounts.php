@@ -127,6 +127,10 @@
                     } else if ($account->market_name == 'USD') {
                         $colorClass = 'usd-color';
                         $icon = 'usd';
+                    } else if ($account->market_name == 'XLM') {
+                        $colorClass = 'usd-color';
+                        $icon = 'usd';
+
                     } ?>
 
                     <li class="list-group-item accounts-row" data-type="other" data-currency="<?=$account->market_name?>">

@@ -155,7 +155,6 @@ class TradeController extends BaseController
             'market_name' => $currency,
             'type' => 'manual'
         ])) {
-
             $account->delete();
         }
 
