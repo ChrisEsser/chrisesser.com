@@ -8,7 +8,7 @@
             <div class="card card-trade">
                 <div class="card-content">
                     <h4 class="card-title">Trade</h4>
-                    <p class="category">Bitcoin toadding application using GDAX API.</p>
+                    <p class="category">Cryptocurrency trading application using GDAX API.</p>
                 </div>
             </div>
         </div>
