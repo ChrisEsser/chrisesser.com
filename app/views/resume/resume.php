@@ -107,6 +107,10 @@
         text-align: right;
     }
 
+    td {
+        border-top: none !important;
+    }
+
     @media (max-width: 767px) {
         .paper-left-col > div:nth-child(3) {
             flex-basis: 100%;
@@ -214,6 +218,10 @@
                                     <td><a href="https://github.com/chrisesser" target="_blank"><i class="fa fa-github"></i> Github</a></td>
                                     <td><a href="https://www.linkedin.com/in/christopher-esser-316113b4/" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></td>
                                 </tr>
+                                <tr>
+                                    <td><a href="https://chrisesser.com" target="_blank">chrisesser.com</td>
+                                    <td><a href="https://codepen.io/ChrisEsser" target="_blank">CodePen</a></td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -226,13 +234,16 @@
                     <h3>Skills</h3>
 
                     <h4 style="font-size: 1.1em; text-decoration: underline">Backend Development</h4>
-                    <p>PHP 5.3+, PHPUnit, AWS, Composer, xDebug, Performance, SOAP/Resful API, Design Patterns, Laravel, MVC</p>
+                    <p>PHP 5.6+, Composer, PHPUnit, xDebug, Design Patterns, Performance, SOAP\Restful APIs, Template Engines (Twig, Blade), Larave, MVC, AWS</p>
 
                     <h4 style="font-size: 1.1em; text-decoration: underline">Frontend Development</h4>
                     <p>HTML5, CSS3, Javascript, JQuery, React, Ajax, JSON, Bootstrap, Responsive Design, UI/UX</p>
 
                     <h4 style="font-size: 1.1em; text-decoration: underline">Databases</h4>
-                    <p>MySQL, SQL Server, SQLite, PostgreSQL, MongoDB</p>
+                    <p>MySQL, MsSQL, SQLite, PostgreSQL, MongoDB</p>
+
+                    <h4 style="font-size: 1.1em; text-decoration: underline">Server</h4>
+                    <p>Windows, Linux, Apache, NGINX, IIS, DNS Management</p>
 
 
                     <h3>Personal Details</h3>
@@ -269,13 +280,14 @@
 
                 <h3>Specialties</h3>
 
-                <h4>Backend: PHP 5.6+, OOP, Composer, SOAP/RESTful APIs</h4>
+                <h4>Backend: PHP 5.6+, OOP, Composer, SOAP/RESTful APIs, MVC</h4>
 
-                <h4>Frontend: HTML5, CSS3, SASS, LESS. JQuery, Bootstrap</h4>
+                <h4>Frontend: HTML5, CSS3, SASS, LESS. JQuery, Bootstrap, React</h4>
 
-                <h4>Databases: MsSQL, SQLite, PostgreSQ</h4>
+                <h4>Databases: MySQL, MsSQL, SQLite, PostgreSQL</h4>
 
-                <h4>Other Software Development: Delphi (Windows Desktop Applications)</h4>
+                <h4>Other Software Development:  Delphi (Windows Desktop Applications), C++
+                    (VST Audio Software)</h4>
 
 
                 <h3>Work History</h3>
@@ -303,7 +315,7 @@
                             <b>Software Developer</b><br />
                             Freelance<br />
                             <ul>
-                                <li>Custom MVC (PHP) framework development</li>
+                                <li>Custom MVC PHP framework development</li>
                                 <li>Open Source CMS web development</li>
                                 <li>C++ dll development</li>
                                 <li>Mobile app development</li>
