@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <canvas id="btc-chart" height="100"></canvas>
+            <canvas id="bch-chart" height="100"></canvas>
         </div>
     </div>
 
@@ -88,9 +88,9 @@ $(document).ready(function() {
     };
 
     loadChart('BTC-USD');
-    loadChart('BCH-USD');
-    loadChart('ETH-USD');
-    loadChart('LTC-USD');
+    setTimeout(function (){ loadChart('BCH-USD');}, 1000);
+    setTimeout(function (){ loadChart('ETH-USD');}, 1000);
+    setTimeout(function (){ loadChart('LTC-USD');}, 1000);
 
     var btBalance = ('<?=$btcBalance?>') ? <?=$btcBalance?> : 0;
     var bchBalance = ('<?=$bchBalance?>') ? <?=$bchBalance?> : 0;
@@ -101,7 +101,8 @@ $(document).ready(function() {
     var etcusd = 0;
     var ltcusd = 0;
 
-    var coinsArray = ['BTC-USD', 'BCH-USD', 'ETH-USD', 'LTC-USD'];
+//    var coinsArray = ['BTC-USD', 'BCH-USD', 'ETH-USD', 'LTC-USD'];
+    var coinsArray = ['BTC-USD', 'ETH-USD', 'LTC-USD'];
 
     var socket = new WebSocket("wss://ws-feed.gdax.com");
     socket.onopen = function() {
@@ -146,42 +147,54 @@ $(document).ready(function() {
 
         $.getJSON( "https://api.gdax.com/products/" + currency + "/candles", {granularity: 900}, function( data ) {
         }).done(function(data) {
+            
+            if (data) {
 
-            var closeData = [];
-            var timeData = [];
-            for (var j = 95; j >= 0; j--) {
-                closeData.push(data[j][4]);
-                var date = new Date(data[j][0]*1000);
-                var hours = date.getHours();
-                var minutes = "0" + date.getMinutes();
-                var formattedTime = hours + ':' + minutes.substr(-2);
-                timeData.push(formattedTime);
+                var closeData = [];
+                var timeData = [];
+
+                if (data.length >= 95) t = 95;
+                else t = data.length - 1;
+
+                for (var j = t; j >= 0; j--) {
+
+                    closeData.push(data[j][4]);
+                    var date = new Date(data[j][0]*1000);
+                    var hours = date.getHours();
+                    var minutes = "0" + date.getMinutes();
+                    var formattedTime = hours + ':' + minutes.substr(-2);
+                    timeData.push(formattedTime);
+                }
+
+                if (currency == 'BTC-USD') {
+                    chartObj = $('#btc-chart');
+                    color = '#F4A460';
+                } else if (currency == 'ETH-USD') {
+                    chartObj = $('#eth-chart');
+                    color = '#9370DB';
+                } else if (currency == 'LTC-USD') {
+                    chartObj = $('#ltc-chart');
+                    color = '#335F89';
+                } else if (currency == 'BCH-USD') {
+                    chartObj = $('#bch-chart');
+                    color = '#85C150';
+                }
+
+                var chart = new Chart(chartObj, {
+                    type: 'line',
+                    data: {
+                        labels: timeData,
+                        datasets: [{
+                            label: currency + ' - Close',
+                            data: closeData,
+                            backgroundColor: color,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: chart_options
+                });
+
             }
-
-            if (currency == 'BTC-USD') {
-                chartObj = $('#btc-chart');
-                color = '#F4A460';
-            } else if (currency == 'ETH-USD') {
-                chartObj = $('#eth-chart');
-                color = '#9370DB';
-            } else if (currency == 'LTC-USD') {
-                chartObj = $('#ltc-chart');
-                color = '#335F89';
-            }
-
-            var chart = new Chart(chartObj, {
-                type: 'line',
-                data: {
-                    labels: timeData,
-                    datasets: [{
-                        label: currency + ' - Close',
-                        data: closeData,
-                        backgroundColor: color,
-                        pointRadius: 0
-                    }]
-                },
-                options: chart_options
-            });
 
         });
     }
