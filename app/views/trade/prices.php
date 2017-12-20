@@ -10,40 +10,6 @@
             <div class="trade-graph-top-bar">
                 <div class="row">
                     <div class="col-xs-6">
-                        <div class="graph-main-label">Bitcoin</div>
-                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BTC</div>
-                    </div>
-                    <div class="col-xs-6" style="text-align: right">
-                        <div class="graph-money-label">$<span id="BTC-USD"></span></div>
-                    </div>
-                </div>
-            </div>
-            <canvas id="btc-chart" height="100"></canvas>
-        </div>
-    </div>
-
-    <div class="col-lg-12 row">
-        <div class="graph-section">
-            <div class="trade-graph-top-bar">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="graph-main-label">Bitcoin Cash</div>
-                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BCH</div>
-                    </div>
-                    <div class="col-xs-6" style="text-align: right">
-                        <div class="graph-money-label">$<span id="BCH-USD"></span></div>
-                    </div>
-                </div>
-            </div>
-            <canvas id="bch-chart" height="100"></canvas>
-        </div>
-    </div>
-
-    <div class="col-lg-12 row">
-        <div class="graph-section">
-            <div class="trade-graph-top-bar">
-                <div class="row">
-                    <div class="col-xs-6">
                         <div class="graph-main-label ">Ethereum</div>
                         <div><i class="fa fa-circle" style="color: #9370DB"></i> ETH</div>
                     </div>
@@ -73,6 +39,40 @@
         </div>
     </div>
 
+    <div class="col-lg-12 row">
+        <div class="graph-section">
+            <div class="trade-graph-top-bar">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="graph-main-label">Bitcoin Cash</div>
+                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BCH</div>
+                    </div>
+                    <div class="col-xs-6" style="text-align: right">
+                        <div class="graph-money-label">$<span id="BCH-USD"></span></div>
+                    </div>
+                </div>
+            </div>
+            <canvas id="bch-chart" height="100"></canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-12 row">
+        <div class="graph-section">
+            <div class="trade-graph-top-bar">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="graph-main-label">Bitcoin</div>
+                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BTC</div>
+                    </div>
+                    <div class="col-xs-6" style="text-align: right">
+                        <div class="graph-money-label">$<span id="BTC-USD"></span></div>
+                    </div>
+                </div>
+            </div>
+            <canvas id="btc-chart" height="100"></canvas>
+        </div>
+    </div>
+
 </div>
 
 
@@ -87,10 +87,13 @@ $(document).ready(function() {
         legend: {display: false}
     };
 
-    loadChart('BTC-USD');
-    setTimeout(function (){ loadChart('BCH-USD');}, 1000);
-    setTimeout(function (){ loadChart('ETH-USD');}, 1000);
+
+    setTimeout(function (){ loadChart('ETH-USD');}, 0);
     setTimeout(function (){ loadChart('LTC-USD');}, 1000);
+    setTimeout(function (){ loadChart('BTC-USD');}, 2000);
+    setTimeout(function (){ loadChart('BCH-USD');}, 3000);
+
+
 
     var btBalance = ('<?=$btcBalance?>') ? <?=$btcBalance?> : 0;
     var bchBalance = ('<?=$bchBalance?>') ? <?=$bchBalance?> : 0;
@@ -101,8 +104,8 @@ $(document).ready(function() {
     var etcusd = 0;
     var ltcusd = 0;
 
-//    var coinsArray = ['BTC-USD', 'BCH-USD', 'ETH-USD', 'LTC-USD'];
-    var coinsArray = ['BTC-USD', 'ETH-USD', 'LTC-USD'];
+    var coinsArray = ['BTC-USD', 'BCH-USD', 'ETH-USD', 'LTC-USD'];
+//    var coinsArray = ['BTC-USD', 'ETH-USD', 'LTC-USD'];
 
     var socket = new WebSocket("wss://ws-feed.gdax.com");
     socket.onopen = function() {
@@ -147,23 +150,22 @@ $(document).ready(function() {
 
         $.getJSON( "https://api.gdax.com/products/" + currency + "/candles", {granularity: 900}, function( data ) {
         }).done(function(data) {
-            
+
             if (data) {
 
                 var closeData = [];
                 var timeData = [];
 
-                if (data.length >= 95) t = 95;
-                else t = data.length - 1;
+                for (var j = 95; j >= 0; j--) {
 
-                for (var j = t; j >= 0; j--) {
-
-                    closeData.push(data[j][4]);
-                    var date = new Date(data[j][0]*1000);
-                    var hours = date.getHours();
-                    var minutes = "0" + date.getMinutes();
-                    var formattedTime = hours + ':' + minutes.substr(-2);
-                    timeData.push(formattedTime);
+                    if (j in data) {
+                        closeData.push(data[j][4]);
+                        var date = new Date(data[j][0]*1000);
+                        var hours = date.getHours();
+                        var minutes = "0" + date.getMinutes();
+                        var formattedTime = hours + ':' + minutes.substr(-2);
+                        timeData.push(formattedTime);
+                    }
                 }
 
                 if (currency == 'BTC-USD') {
