@@ -17,6 +17,7 @@ class TradeController extends BaseController
     public $accounts;
     public $usdBalance;
     public $btcBalance;
+    public $bchBalance;
     public $ethBalance;
     public $ltcBalance;
     public $btcUsd;
@@ -102,6 +103,7 @@ class TradeController extends BaseController
         $this->set('accounts', $this->accounts);
         $this->set('usdBalance', $this->usdBalance);
         $this->set('btcBalance', $this->btcBalance);
+        $this->set('bchBalance', $this->bchBalance);
         $this->set('ethBalance', $this->ethBalance);
         $this->set('ltcBalance', $this->ltcBalance);
 
@@ -391,6 +393,8 @@ class TradeController extends BaseController
                         $this->ethBalance = $account['balance'];
                     } else if ( $account['currency'] == 'LTC' && ($currency == 'ltc' || $currency == 'all')) {
                         $this->ltcBalance = $account['balance'];
+                    } else if ( $account['currency'] == 'BCH' && ($currency == 'bch' || $currency == 'all')) {
+                        $this->bchBalance = $account['balance'];
                     }
                 }
             }
@@ -407,6 +411,8 @@ class TradeController extends BaseController
                     $this->ethBalance += $account['balance'];
                 } else if ( $account['currency'] == 'LTC' && ($currency == 'ltc' || $currency == 'all')) {
                     $this->ltcBalance += $account['balance'];
+                } else if ( $account['currency'] == 'BCH' && ($currency == 'bch' || $currency == 'all')) {
+                    $this->bchBalance = $account['balance'];
                 }
             }
         }

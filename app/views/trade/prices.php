@@ -27,6 +27,23 @@
             <div class="trade-graph-top-bar">
                 <div class="row">
                     <div class="col-xs-6">
+                        <div class="graph-main-label">Bitcoin Cash</div>
+                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BCH</div>
+                    </div>
+                    <div class="col-xs-6" style="text-align: right">
+                        <div class="graph-money-label">$<span id="BCH-USD"></span></div>
+                    </div>
+                </div>
+            </div>
+            <canvas id="btc-chart" height="100"></canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-12 row">
+        <div class="graph-section">
+            <div class="trade-graph-top-bar">
+                <div class="row">
+                    <div class="col-xs-6">
                         <div class="graph-main-label ">Ethereum</div>
                         <div><i class="fa fa-circle" style="color: #9370DB"></i> ETH</div>
                     </div>
@@ -71,21 +88,26 @@ $(document).ready(function() {
     };
 
     loadChart('BTC-USD');
+    loadChart('BCH-USD');
     loadChart('ETH-USD');
     loadChart('LTC-USD');
 
     var btBalance = ('<?=$btcBalance?>') ? <?=$btcBalance?> : 0;
+    var bchBalance = ('<?=$bchBalance?>') ? <?=$bchBalance?> : 0;
     var ethBalance = ('<?=$ethBalance?>') ? <?=$ethBalance?> : 0;
     var ltcBalance = ('<?=$ltcBalance?>') ? <?=$ltcBalance?> : 0;
     var btcusd = 0;
+    var bchusd = 0;
     var etcusd = 0;
     var ltcusd = 0;
+
+    var coinsArray = ['BTC-USD', 'BCH-USD', 'ETH-USD', 'LTC-USD'];
 
     var socket = new WebSocket("wss://ws-feed.gdax.com");
     socket.onopen = function() {
         var msg = {
             type: "subscribe",
-            channels: [{name: 'ticker', "product_ids": ["BTC-USD", 'ETH-USD', 'LTC-USD']}]
+            channels: [{name: 'ticker', "product_ids": coinsArray}]
         };
         socket.send(JSON.stringify(msg));
     };
@@ -105,10 +127,12 @@ $(document).ready(function() {
                 etcusd = ethBalance * msg.price;
             } else if (msg.product_id == 'LTC-USD') {
                 ltcusd = ltcBalance * msg.price;
+            } else if (msg.product_id == 'BCH-USD') {
+                bchusd = bchBalance * msg.price;
             }
 
             var accountBallance = ('<?=$usdBalance?>') ? <?=$usdBalance?> : 0;
-            accountBallance = accountBallance + btcusd + etcusd + ltcusd;
+            accountBallance = accountBallance + btcusd + etcusd + ltcusd + bchusd;
 
 
             $('#' + msg.product_id).text(price);
