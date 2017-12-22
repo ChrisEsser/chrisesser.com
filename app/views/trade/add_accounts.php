@@ -183,6 +183,18 @@
 
 <div class="container">
 
+    <div class="col-lg-6">
+        <div class="input-group">
+            <input type="text" id="search_term" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" id="search" style="height:auto">Go!</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+
     <h4 class="account-type-header">Available Currencies</h4>
 
     <div id="currencies-container">
@@ -251,7 +263,20 @@
         $('#balanceModal .modal-title').text('Add ' + name + ' (' + currency + ')');
         $('#balanceModal').modal('show');
 
+    });
 
+    $('#search').click(function() {
+
+        $.get('<?=BASE_PATH?>/trade/get_markets/' + $('#search_term').val(), function() {
+        }).done(function(results) {
+
+            console.log(results);
+
+        }).fail(function(results) {
+
+            console.log(results);
+
+        });
 
     });
 

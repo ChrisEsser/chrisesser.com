@@ -19,6 +19,7 @@ $router->addRoutes([
     ['GET', '/trade/alerts', 'TradeController#alerts'],
     ['GET', '/trade/settings', 'TradeController#settings'],
     ['POST', '/trade/settings/save', 'TradeController#settings_save'],
+    ['GET', '/trade/get_markets/[:term]', 'TradeController#get_markets'],
 
     ['POST', '/trade/ajax/buy', 'AjaxController#buy'],
     ['POST', '/trade/ajax/sell', 'AjaxController#sell'],

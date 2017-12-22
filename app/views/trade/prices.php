@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="graph-main-label">Bitcoin Cash</div>
-                        <div><i class="fa fa-circle" style="color: #F4A460"></i> BCH</div>
+                        <div><i class="fa fa-circle" style="color: #85C150"></i> BCH</div>
                     </div>
                     <div class="col-xs-6" style="text-align: right">
                         <div class="graph-money-label">$<span id="BCH-USD"></span></div>
@@ -158,14 +158,14 @@ $(document).ready(function() {
 
                 for (var j = 95; j >= 0; j--) {
 
-                    if (j in data) {
+//                    if (j in data) {
                         closeData.push(data[j][4]);
                         var date = new Date(data[j][0]*1000);
                         var hours = date.getHours();
                         var minutes = "0" + date.getMinutes();
                         var formattedTime = hours + ':' + minutes.substr(-2);
                         timeData.push(formattedTime);
-                    }
+//                    }
                 }
 
                 if (currency == 'BTC-USD') {

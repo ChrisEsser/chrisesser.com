@@ -25,6 +25,7 @@ class TradeController extends BaseController
     public $ltcUsd;
     public $cbAccounts;
     public $otherAccounts;
+    public $otherCoins;
 
     protected $testMode;
 
@@ -137,6 +138,10 @@ class TradeController extends BaseController
         $this->set('ethUsd', $this->exchange->ticker('ETH-USD')['price'] ?: 0);
         $this->set('ltcUsd', $this->exchange->ticker('LTC-USD')['price'] ?: 0);
 
+        foreach ($this->otherCoins as $coin => $info) {
+            $this->set(strtolower($coin) . 'Usd', $info['usd']);
+        }
+
     }
 
     public function account($type, $currency)
@@ -149,6 +154,8 @@ class TradeController extends BaseController
 
     public function remove_account()
     {
+        $this->render = 0;
+
         $type = (!empty($_POST['type'])) ? $_POST['type'] : '';
         $currency = (!empty($_POST['account'])) ? $_POST['account'] : '';
 
@@ -430,10 +437,45 @@ class TradeController extends BaseController
 
                 $result = json_decode(file_get_contents('https://api.coinmarketcap.com/v1/ticker/' . $name));
                 $this->usdBalance += $result[0]->price_usd * $account->balance;
+
+                $this->otherCoins[$account->market_name]['usd'] = !empty($result[0]->price_usd) ? $result[0]->price_usd : 0;
             }
         }
 
         return true;
+
+    }
+
+    public function get_markets($term)
+    {
+
+        $this->render = 0;
+        header('Content-Type: application/json');
+
+        // get a list of available accounts from bitrex
+        $url = 'https://bittrex.com/api/v1.1/public/getmarkets';
+        $tmpMarkets = json_decode(file_get_contents($url));
+        $tmpMarkets = $tmpMarkets->result;
+
+        $markets = $checked = [];
+        foreach ($tmpMarkets as $tmpMarket) {
+
+            if (!Account::findOne(['user_id' => $this->loggedInUser['id'], 'market_name' => $tmpMarket->MarketCurrency])
+                && $tmpMarket->MarketCurrency != 'USDT'
+                && !in_array($tmpMarket->MarketCurrency, $checked)) {
+
+                $checked[] = $tmpMarket->MarketCurrency;
+
+                $markets[] = $tmpMarket->MarketCurrency;
+
+                if (preg_match('/' . $term . '/', $tmpMarket->MarketCurrency) || preg_match('/' . $term . '/', $tmpMarket->MarketCurrencyLong)) {
+                    $markets[] = $tmpMarket;
+                }
+
+            }
+        }
+
+        echo json_encode($markets);
 
     }
 
