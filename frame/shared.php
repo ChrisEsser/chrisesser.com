@@ -19,7 +19,7 @@ spl_autoload_register( function( $className ) {
         require $modelsPath;
     } else {
         http_response_code(500);
-        echo 'Class not found';
+        echo 'Class not found error';
         die;
     }
 
