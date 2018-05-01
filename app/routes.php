@@ -38,4 +38,6 @@ $router->addRoutes([
     ['POST', '/user/save/[i:id]/', 'UserController#save'],
     ['POST', '/user/save', 'UserController#save'],
 
+    ['GET', '/get', 'DataController#get'],
+
 ]);

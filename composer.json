@@ -4,6 +4,7 @@
         "chrisesser/gdaxexchange": "@dev",
         "davedevelopment/phpmig": "^1.4",
         "pimple/pimple": "~3.0",
-        "picorm/picorm": "^0.0.7"
+        "picorm/picorm": "^0.0.7",
+        "aws/aws-sdk-php": "^3.55"
     }
 }

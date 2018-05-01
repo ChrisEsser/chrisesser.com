@@ -20,13 +20,18 @@ class BaseController
     {
         global $inflect;
 
+        var_dump($controller);
+
         $this->_controller = ucfirst($controller);
         $this->_action = $action;
 
         $model = ucfirst($inflect->singularize($controller));
+        $model = 'Data';
         $this->render = 1;
         $this->render_header = 1;
+        var_dump($model);
         $this->$model = new $model;
+
 
         $this->_template = new Template($controller, $action);
 
@@ -43,9 +48,9 @@ class BaseController
 
     function __destruct()
     {
-        if ($this->render) {
-            $this->_template->render($this->render_header);
-        }
+//        if ($this->render) {
+//            $this->_template->render($this->render_header);
+//        }
     }
 
 }
