@@ -31,17 +31,16 @@ class AwsdataController extends BaseController
 
         // Use the high-level iterators (returns ALL of your objects).
         try {
-            $objects = $s3->getPaginator('ListObjects', [
-                'Bucket' => $bucket
-            ]);
 
-//            echo "Keys retrieved!" . "\n";
+            $objects = $s3->getIterator('ListObjects', array(
+                'Bucket' => $bucket,
+                'Prefix' => 'files/'
+            ));
 
-            var_dump($objects);
+            foreach ($objects as $object) {
+                echo $object['Key'] . "\n";
+            }
 
-//            foreach ($objects as $object) {
-//                echo $object['Key'] . PHP_EOL;
-//            }
         } catch (S3Exception $e) {
             echo $e->getMessage() . "\n";
         }
