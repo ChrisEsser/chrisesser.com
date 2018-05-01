@@ -34,7 +34,7 @@ class AwsdataController extends BaseController
 
             $objects = $s3->getIterator('ListObjects', array(
                 'Bucket' => $bucket,
-                'Prefix' => 'files/'
+                'Prefix' => ''
             ));
 
             var_dump($objects);
@@ -42,7 +42,7 @@ class AwsdataController extends BaseController
 //            foreach ($objects as $object) {
 //                echo $object['Key'] . "\n";
 //            }
-            
+
 
         } catch (S3Exception $e) {
             echo $e->getMessage() . "\n";
