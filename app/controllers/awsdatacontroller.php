@@ -35,7 +35,7 @@ class AwsdataController extends BaseController
                 'Bucket' => $bucket
             ]);
 
-            echo "Keys retrieved!" . "\n";
+//            echo "Keys retrieved!" . "\n";
 
             var_dump($objects);
 
