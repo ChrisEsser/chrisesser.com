@@ -22,14 +22,14 @@ class DataController extends BaseController
         try {
 
 
-            $sdk = new Aws\Sdk([
-                'region'  => 'us-west-2',
-                'version' => 'latest',
-                'scheme' => 'http'
-            ]);
-            $s3 = $sdk->createS3();
+//            $sdk = new Aws\Sdk([
+//                'region'  => 'us-west-2',
+//                'version' => 'latest',
+//                'scheme' => 'http'
+//            ]);
+//            $s3 = $sdk->createS3();
 
-            $result = $s3->listBuckets();
+//            $result = $s3->listBuckets();
 
 //            var_dump($result);
 
