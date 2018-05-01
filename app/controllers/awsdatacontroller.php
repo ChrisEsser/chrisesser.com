@@ -26,7 +26,6 @@ class AwsdataController extends BaseController
             $sdk = new Aws\Sdk([
                 'region'  => 'us-west-2',
                 'version' => 'latest',
-                'scheme' => 'http'
             ]);
             $s3 = $sdk->createS3();
 
