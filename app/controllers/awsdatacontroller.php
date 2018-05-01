@@ -37,9 +37,11 @@ class AwsdataController extends BaseController
                 'Prefix' => 'files/'
             ));
 
-            foreach ($objects as $object) {
-                echo $object['Key'] . "\n";
-            }
+            var_dump($objects);
+
+//            foreach ($objects as $object) {
+//                echo $object['Key'] . "\n";
+//            }
             
 
         } catch (S3Exception $e) {
