@@ -1,5 +1,8 @@
 <?php
 
+use Aws\Exception\AwsException;
+use Aws\S3\Exception\S3Exception;
+
 class DataController extends BaseController
 {
 
@@ -28,7 +31,7 @@ class DataController extends BaseController
 
             $result = $s3->listBuckets();
 
-            var_dump($result);
+//            var_dump($result);
 
         } catch (S3Exception $e) {
             echo 'S3 Exception: ' . "\n";

@@ -20,8 +20,6 @@ class BaseController
     {
         global $inflect;
 
-        var_dump($controller);
-
         $this->_controller = ucfirst($controller);
         $this->_action = $action;
 
