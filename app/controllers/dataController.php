@@ -1,5 +1,6 @@
 <?php
 
+use Aws\Sdk;
 use Aws\Exception\AwsException;
 use Aws\S3\Exception\S3Exception;
 

@@ -9,13 +9,18 @@ spl_autoload_register( function( $className ) {
     $controllersPath = ROOT . DS . 'app' . DS . 'controllers' . DS . $className . '.php';
     $modelsPath = ROOT . DS . 'app' . DS . 'models' . DS . $className . '.php';
 
+//    var_dump($framePath);
+//    var_dump($appClassesPath);
+//    var_dump($controllersPath);
+//    var_dump($modelsPath);
+
     if (file_exists($framePath)) {
         require $framePath;
     } elseif (file_exists($appClassesPath)) {
         require $appClassesPath;
-    } elseif (file_exists($controllersPath )) {
+    } elseif (file_exists($controllersPath)) {
         require $controllersPath;
-    } elseif (file_exists($modelsPath )) {
+    } elseif (file_exists($modelsPath)) {
         require $modelsPath;
     } else {
         http_response_code(500);
