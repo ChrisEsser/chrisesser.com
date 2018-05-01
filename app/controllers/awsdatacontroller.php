@@ -1,10 +1,10 @@
 <?php
 
-use Aws\Sdk;
-use Aws\Exception\AwsException;
-use Aws\S3\Exception\S3Exception;
+//use Aws\Sdk;
+//use Aws\Exception\AwsException;
+//use Aws\S3\Exception\S3Exception;
 
-class DataController extends BaseController
+class AwsdataController extends BaseController
 {
 
     public function beforeAction()

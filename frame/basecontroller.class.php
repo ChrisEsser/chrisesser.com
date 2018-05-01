@@ -24,7 +24,7 @@ class BaseController
         $this->_action = $action;
 
         $model = ucfirst($inflect->singularize($controller));
-        $model = 'Data';
+        if ($model == 'Awsdatum') $model = 'Awsdata';
         $this->render = 1;
         $this->render_header = 1;
         $this->$model = new $model;
