@@ -36,9 +36,12 @@ class AwsdataController extends BaseController
             ]);
 
             echo "Keys retrieved!" . PHP_EOL;
-            foreach ($objects as $object) {
-                echo $object['Key'] . PHP_EOL;
-            }
+
+            var_dump($objects);
+
+//            foreach ($objects as $object) {
+//                echo $object['Key'] . PHP_EOL;
+//            }
         } catch (S3Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
