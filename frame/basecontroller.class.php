@@ -29,7 +29,6 @@ class BaseController
         $model = 'Data';
         $this->render = 1;
         $this->render_header = 1;
-        var_dump($model);
         $this->$model = new $model;
 
 
