@@ -40,6 +40,7 @@ class AwsdataController extends BaseController
             foreach ($objects as $object) {
                 echo $object['Key'] . "\n";
             }
+            
 
         } catch (S3Exception $e) {
             echo $e->getMessage() . "\n";
