@@ -35,7 +35,7 @@ class AwsdataController extends BaseController
                 'Bucket' => $bucket
             ]);
 
-            echo "Keys retrieved!" . PHP_EOL;
+            echo "Keys retrieved!" . "\n";
 
             var_dump($objects);
 
@@ -43,7 +43,7 @@ class AwsdataController extends BaseController
 //                echo $object['Key'] . PHP_EOL;
 //            }
         } catch (S3Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            echo $e->getMessage() . "\n";
         }
 
 
